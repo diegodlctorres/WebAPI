@@ -28,9 +28,9 @@ namespace CK.DataAccess.Models
         public string Flgiso { get; set; }
         public string Appversion { get; set; }
         public DateTime? FecAcceso { get; set; }
-        public byte? ClaveAlt { get; set; }
-        public bool? SessionNumber { get; set; }
-        public byte? ClaveApp { get; set; }
+        public int? ClaveAlt { get; set; }
+        public int? SessionNumber { get; set; }
+        public int? ClaveApp { get; set; }
 
         public virtual CkPerfil CodperfNavigation { get; set; }
     }
