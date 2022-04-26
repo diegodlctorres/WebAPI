@@ -1,7 +1,9 @@
+using CK.DataAccess.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +28,13 @@ namespace CK.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetConnectionString("DBSYSTEXConnection");
+            services.AddDbContext<ModelContext>(options =>
+            {
+                options.UseOracle(
+                    connectionString,
+                    options => options.UseOracleSQLCompatibility("11"));
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
