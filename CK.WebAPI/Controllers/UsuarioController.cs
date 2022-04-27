@@ -1,14 +1,10 @@
-﻿using CK.DataAccess.Models;
+﻿using CK.DataTransferObject;
 using CK.Services;
-using Microsoft.AspNetCore.Http;
+using CK.WebAPI.Mappings;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CK.WebAPI.Mappings;
-using CK.DataTransferObject;
 
 namespace CK.WebAPI.Controllers
 {
@@ -24,23 +20,24 @@ namespace CK.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CkUser>>> Listar()
+        public async Task<ActionResult<List<UsuarioDTO>>> Listar()
         {
             var retorno = await service.Listar();
 
             if (retorno.Objeto != null)
-                return retorno.Objeto;
+                //return retorno.Objeto.Select(x => x.ToDataTransferObject()).ToList();
+                return retorno.Objeto.Select(Mapper.ToDataTransferObject).ToList();
             else
                 return StatusCode(retorno.Status, retorno.Error);
         }
 
-        [HttpGet("{CodFuncionario}")]
-        public async Task<ActionResult<CkUser>> BuscarPorCodFuncionario(decimal codFuncionario)
+        [HttpGet("{codFuncionario}")]
+        public async Task<ActionResult<UsuarioDTO>> BuscarPorCodFuncionario(decimal codFuncionario)
         {
             var retorno = await service.BuscarPorCodFuncionario(codFuncionario);
 
             if (retorno.Objeto != null)
-                return retorno.Objeto;
+                return retorno.Objeto.ToDataTransferObject();
             else
                 return StatusCode(retorno.Status, retorno.Error);
         }
