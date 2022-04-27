@@ -1,4 +1,5 @@
 using CK.DataAccess.Models;
+using CK.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +36,8 @@ namespace CK.WebAPI
                     connectionString,
                     options => options.UseOracleSQLCompatibility("11"));
             });
+
+            services.AddTransient<IUsuarioService, UsuarioService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

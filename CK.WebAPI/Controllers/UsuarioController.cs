@@ -1,4 +1,5 @@
 ﻿using CK.DataAccess.Models;
+using CK.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CK.WebAPI.Mappings;
+using CK.DataTransferObject;
 
 namespace CK.WebAPI.Controllers
 {
@@ -13,89 +16,33 @@ namespace CK.WebAPI.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private ModelContext context;
-        public UsuarioController(ModelContext context)
+        private readonly IUsuarioService service;
+
+        public UsuarioController(IUsuarioService service)
         {
-            this.context = context;
+            this.service = service;
         }
 
         [HttpGet]
-        public async Task<List<CkUser>> Listar()
+        public async Task<ActionResult<List<CkUser>>> Listar()
         {
-            return await context.CkUsers.ToListAsync();
+            var retorno = await service.Listar();
+
+            if (retorno.Objeto != null)
+                return retorno.Objeto;
+            else
+                return StatusCode(retorno.Status, retorno.Error);
         }
 
         [HttpGet("{CodFuncionario}")]
-        public async Task<ActionResult<CkUser>> BuscarPorId(decimal CodFuncionario)
+        public async Task<ActionResult<CkUser>> BuscarPorCodFuncionario(decimal codFuncionario)
         {
-            var usuario = await context.CkUsers.FirstOrDefaultAsync(x => x.CodFuncionario == CodFuncionario);
+            var retorno = await service.BuscarPorCodFuncionario(codFuncionario);
 
-            if (usuario != null)
-                return usuario;
+            if (retorno.Objeto != null)
+                return retorno.Objeto;
             else
-                return NotFound();
+                return StatusCode(retorno.Status, retorno.Error);
         }
-
-        //[HttpPost]
-        //public async Task<ActionResult<CkUser>> Guardar(CkUser c)
-        //{
-        //    try
-        //    {
-        //        await context.CkUsers.AddAsync(c);
-        //        await context.SaveChangesAsync();
-        //        c.Id = await context.CkUsers.MaxAsync(u => u.Id);
-
-        //        return c;
-        //    }
-        //    catch (DbUpdateException)
-        //    {
-        //        return StatusCode(500, "Se encontró un error");
-        //    }
-        //}
-
-        //[HttpPut]
-        //public async Task<ActionResult<CkUser>> Actualizar(CkUser c)
-        //{
-        //    if (c == null || c.Id == 0)
-        //        return BadRequest("Faltan datos");
-
-        //    CkUser cat = await context.CkUsers.FirstOrDefaultAsync(x => x.Id == c.Id);
-
-        //    if (cat == null)
-        //        return NotFound();
-
-        //    try
-        //    {
-        //        cat.Nombre = c.Nombre;
-        //        context.CkUsers.Update(cat);
-        //        await context.SaveChangesAsync();
-
-        //        return cat;
-        //    }
-        //    catch (DbUpdateException)
-        //    {
-        //        return StatusCode(500, "Se encontró un error");
-        //    }
-        //}
-
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<bool>> Eliminar(decimal id)
-        //{
-        //    CkUser cat = await context.CkUsers.FirstOrDefaultAsync(x => x.Id == id);
-
-        //    if (cat == null)
-        //        return NotFound();
-
-        //    try
-        //    {
-        //        context.CkUsers.Remove(cat);
-        //        await context.SaveChangesAsync();
-        //        return true;
-        //    }
-        //    catch (DbUpdateException)
-        //    {
-        //        return StatusCode(500, "Se encontró un error");
-        //    }
-        //}
     }
 }
