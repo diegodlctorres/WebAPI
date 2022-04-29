@@ -22,6 +22,7 @@ namespace CK.DataAccess.Models
         public virtual DbSet<AppUserAccess> AppUserAccesses { get; set; }
         public virtual DbSet<CkPerfil> CkPerfils { get; set; }
         public virtual DbSet<CkUser> CkUsers { get; set; }
+        public virtual DbSet<Efic050> Efic050s { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -316,6 +317,136 @@ namespace CK.DataAccess.Models
                     .WithMany(p => p.CkUsers)
                     .HasForeignKey(d => d.Codperf)
                     .HasConstraintName("CK_USER_R01");
+            });
+
+            modelBuilder.Entity<Efic050>(entity =>
+            {
+                entity.HasKey(e => new { e.CodEmpresa, e.CodFuncionario });
+
+                entity.ToTable("EFIC_050");
+
+                entity.HasIndex(e => e.CodFuncionario, "I_EFIC_050_1");
+
+                entity.Property(e => e.CodEmpresa)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("COD_EMPRESA");
+
+                entity.Property(e => e.CodFuncionario)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("COD_FUNCIONARIO");
+
+                entity.Property(e => e.CentroCusto)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("CENTRO_CUSTO");
+
+                entity.Property(e => e.CodigoCargo)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("CODIGO_CARGO");
+
+                entity.Property(e => e.CpfFunc)
+                    .HasMaxLength(14)
+                    .IsUnicode(false)
+                    .HasColumnName("CPF_FUNC")
+                    .HasDefaultValueSql("''");
+
+                entity.Property(e => e.CrachaFuncionario)
+                    .HasMaxLength(15)
+                    .IsUnicode(false)
+                    .HasColumnName("CRACHA_FUNCIONARIO")
+                    .HasDefaultValueSql("''");
+
+                entity.Property(e => e.CustoHora)
+                    .HasColumnType("NUMBER(7,2)")
+                    .HasColumnName("CUSTO_HORA")
+                    .HasDefaultValueSql("0.00");
+
+                entity.Property(e => e.DataAdmissao)
+                    .HasColumnType("DATE")
+                    .HasColumnName("DATA_ADMISSAO");
+
+                entity.Property(e => e.DataNascimento)
+                    .HasColumnType("DATE")
+                    .HasColumnName("DATA_NASCIMENTO");
+
+                entity.Property(e => e.EMail)
+                    .HasMaxLength(40)
+                    .IsUnicode(false)
+                    .HasColumnName("E_MAIL")
+                    .HasDefaultValueSql("' '");
+
+                entity.Property(e => e.EstadoCivil)
+                    .HasPrecision(1)
+                    .HasColumnName("ESTADO_CIVIL")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.FlgDestajo)
+                    .HasPrecision(1)
+                    .HasColumnName("FLG_DESTAJO");
+
+                entity.Property(e => e.GrauInstrucao)
+                    .HasPrecision(2)
+                    .HasColumnName("GRAU_INSTRUCAO")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.LancaHrsManu)
+                    .HasPrecision(1)
+                    .HasColumnName("LANCA_HRS_MANU")
+                    .HasDefaultValueSql("1");
+
+                entity.Property(e => e.LancaParada)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("LANCA_PARADA")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.LancaRejeicao)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("LANCA_REJEICAO")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.Nome)
+                    .HasMaxLength(40)
+                    .IsUnicode(false)
+                    .HasColumnName("NOME");
+
+                entity.Property(e => e.Observacao)
+                    .HasMaxLength(2000)
+                    .IsUnicode(false)
+                    .HasColumnName("OBSERVACAO")
+                    .HasDefaultValueSql("''");
+
+                entity.Property(e => e.PlanoSaude)
+                    .HasPrecision(1)
+                    .HasColumnName("PLANO_SAUDE")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.Ramal)
+                    .HasPrecision(8)
+                    .HasColumnName("RAMAL")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.ResponsavelDados)
+                    .HasPrecision(1)
+                    .HasColumnName("RESPONSAVEL_DADOS")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.SetorResponsavel)
+                    .HasPrecision(3)
+                    .HasColumnName("SETOR_RESPONSAVEL")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.Sexo)
+                    .HasPrecision(1)
+                    .HasColumnName("SEXO")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.SitFuncionario)
+                    .HasPrecision(1)
+                    .HasColumnName("SIT_FUNCIONARIO")
+                    .HasDefaultValueSql("1");
+
+                entity.Property(e => e.Turno)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("TURNO");
             });
 
             modelBuilder.HasSequence("APP_MOBILE_INFO_SEQ");
