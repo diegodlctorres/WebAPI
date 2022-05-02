@@ -85,12 +85,47 @@ namespace CK.WebAPI.Controllers
                     UserLogeadoDTO usuario = new UserLogeadoDTO
                     {
                         CodFuncionario = efic050.Objeto.CodFuncionario,
-                        Contrasena =  (int)ckuser.Objeto.ClaveAlt,
+                        Contrasena = (int)ckuser.Objeto.ClaveAlt,
                         Nome = efic050.Objeto.Nome
                     };
                     return ckuserTrue.Objeto.ToDataTransferObject();
                 }
             }
+        }
+
+        [HttpPost("sp/{cf}/{contra}")]
+        public async Task<ActionResult<UserLogeadoDTO>> IniciarSesión(int cf, decimal contra)
+        {
+            UserLogeadoDTO userlogeado = new UserLogeadoDTO();
+            userlogeado.CodFuncionario = cf;
+            userlogeado.Contrasena = contra;
+            var ckuser = await service.GetAppUserCodFuncionario((decimal)cf);
+            if (ckuser.Error != null)
+            {
+                var efic050 = await service.BuscarEfic050CodFuncionatio((decimal)userlogeado.CodFuncionario);
+                if (efic050.Error != null)
+                {
+                    return StatusCode(efic050.Status, efic050.Error);
+                }
+                else
+                {
+                    return StatusCode(ckuser.Status, ckuser.Error);
+                }
+            }
+            else
+            {
+                var ckuserTrue = await service.GetIniciarSesion(Mapper.ToModel(userlogeado));
+                if (ckuserTrue.Error != null)
+                {
+                    return StatusCode(ckuserTrue.Status, ckuserTrue.Error);
+                }
+                else
+                {
+                    await service.HoraIngreso(cf);
+                    return ckuserTrue.Objeto.ToDataTransferObject();
+                }
+            }
+
         }
     }
 }

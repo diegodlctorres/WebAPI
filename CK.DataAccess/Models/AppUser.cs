@@ -9,7 +9,6 @@ namespace CK.DataAccess.Models
     {
         public decimal CodFuncionario { get; set; }
         public decimal Contrasena { get; set; }
-        public bool? Estado { get; set; }
         public string UsuarioRegistro { get; set; }
         public string UsuarioActualizacion { get; set; }
         public DateTime? FechaRegistro { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CK.DataAccess.Models
 {
-    public partial class AppUserLogin
+    public partial class Usuario
     {
         public decimal CodFuncionario { get; set; }
         public decimal Contrasena { get; set; }

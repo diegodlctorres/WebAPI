@@ -149,7 +149,7 @@ namespace CK.WebAPI.Mappings
     public static partial class Mapper
     {
         //Métodos de extensión
-        public static UserLogeadoDTO ToDataTransferObject(this AppUserLogin model)  // Convierte de ModelContext a DTO
+        public static UserLogeadoDTO ToDataTransferObject(this Usuario model)  // Convierte de ModelContext a DTO
         {
             return new UserLogeadoDTO()
             {
@@ -162,9 +162,9 @@ namespace CK.WebAPI.Mappings
 
     public static partial class Mapper
     {
-        public static AppUserLogin ToModel(this UserLogeadoDTO dto)  // Convierte de DTO a ModelContext
+        public static Usuario ToModel(this UserLogeadoDTO dto)  // Convierte de DTO a ModelContext
         {
-            return new AppUserLogin()
+            return new Usuario()
             {
                 CodFuncionario = dto.CodFuncionario,
                 Contrasena = dto.Contrasena,

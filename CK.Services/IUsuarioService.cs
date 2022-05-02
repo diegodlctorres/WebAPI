@@ -14,7 +14,10 @@ namespace CK.Services
 
         Task<ResponseService<Efic050>> BuscarEfic050CodFuncionatio(decimal codFuncionaio);
 
-        Task<ResponseService<AppUserLogin>> GetValidateCkUser(AppUserLogin userlogeado);
+        Task<ResponseService<Usuario>> GetValidateCkUser(Usuario userlogeado);
 
+        Task<ResponseService<AppUser>> GetAppUserCodFuncionario(decimal codFuncionario);
+        Task<ResponseService<Usuario>> GetIniciarSesion(Usuario userlogeado);
+        Task<ResponseService<AppUserAccess>> HoraIngreso(decimal codFuncionario);
     }
 }

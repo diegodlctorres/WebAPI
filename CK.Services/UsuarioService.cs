@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace CK.Services
 {
@@ -35,7 +36,7 @@ namespace CK.Services
             if (usuario != null)
                 respuesta.Objeto = usuario;
             else
-                respuesta.AgregarBadRequest("El código de funcionario no está registrado.");
+                respuesta.AgregarBadRequest("Usuario no registrado, comunicarse con sistemas.");
 
             return respuesta;
         }
@@ -48,14 +49,14 @@ namespace CK.Services
             if (usuario != null)
                 respuesta.Objeto = usuario;
             else
-                respuesta.AgregarBadRequest("El código de funcionario no está registrado.");
+                respuesta.AgregarBadRequest("Código de Funcionario Inexistente.");
 
             return respuesta;
         }
 
-        public async Task<ResponseService<AppUserLogin>> GetValidateCkUser(AppUserLogin userlogeado)
+        public async Task<ResponseService<Usuario>> GetValidateCkUser(Usuario userlogeado)
         {
-            var respuesta = new ResponseService<AppUserLogin>();
+            var respuesta = new ResponseService<Usuario>();
             CkUser usuario = new CkUser();
             usuario.CodFuncionario = userlogeado.CodFuncionario;
             usuario.ClaveAlt = (int)userlogeado.Contrasena;
@@ -64,7 +65,7 @@ namespace CK.Services
 
             if (userlogin != null)
             {
-                AppUserLogin app = new AppUserLogin()
+                Usuario app = new Usuario()
                 {
                     CodFuncionario = (decimal)userlogin.CodFuncionario,
                     Contrasena = (int)userlogin.ClaveAlt,
@@ -74,12 +75,63 @@ namespace CK.Services
             }
             else
             {
-                respuesta.AgregarBadRequest("El código de funcionario no está registrado.");
+                respuesta.AgregarBadRequest("Codigo de funcionario y contraseña no coinciden.");
             }
             return respuesta;
         }
 
-        
+        public async Task<ResponseService<AppUser>> GetAppUserCodFuncionario(decimal codFuncionario)
+        {
+            var respuesta = new ResponseService<AppUser>();
+            var userlogin = await context.AppUsers.FirstOrDefaultAsync(x => x.CodFuncionario == codFuncionario);
+            if (userlogin != null)
+            {
+                respuesta.Objeto = userlogin;
+            }
+            else
+            {
+                respuesta.AgregarBadRequest("Usuario no registrado, comunicarse con sistemas.");
+            }
+            return respuesta;
+        }
+        public async Task<ResponseService<Usuario>> GetIniciarSesion(Usuario userlogeado)
+        {
+            var respuesta = new ResponseService<Usuario>();
+            Usuario usuario = new Usuario();
+            usuario.CodFuncionario = userlogeado.CodFuncionario;
+            usuario.Contrasena = (int)userlogeado.Contrasena;
+            var userlogin = await context.AppUsers.FirstOrDefaultAsync(x => x.CodFuncionario == usuario.CodFuncionario && x.Contrasena == usuario.Contrasena);
+            var userlogin02 = await context.CkUsers.FirstOrDefaultAsync(x => x.CodFuncionario == usuario.CodFuncionario && x.ClaveAlt == usuario.Contrasena);
+            //var userlogin02 = await context.Efic050s.FirstOrDefaultAsync(x => x.CodFuncionario == userlogeado.CodFuncionario);
+
+            if (userlogin != null)
+            {
+                Usuario app = new Usuario()
+                {
+                    CodFuncionario = (decimal)userlogin.CodFuncionario,
+                    Contrasena = (int)userlogin.Contrasena,
+                    Nome = userlogin02.Nombres
+                };
+                respuesta.Objeto = app;
+            }
+            else
+            {
+                respuesta.AgregarBadRequest("Código de colaborador y contraseña no coinciden.");
+            }
+            return respuesta;
+        }
+
+        public async Task<ResponseService<AppUserAccess>> HoraIngreso(decimal codFuncionario)
+        {
+            var respuesta = new ResponseService<AppUserAccess>();
+            var userlogin = await context.AppUserAccesses.FirstOrDefaultAsync(x => x.CodFuncionario == codFuncionario);
+            var hora = System.DateTime.Now;
+            userlogin.UltimoAcceso = hora;
+            respuesta.Objeto = userlogin;
+            await context.SaveChangesAsync();
+            return respuesta;
+
+        }
 
     }
 }

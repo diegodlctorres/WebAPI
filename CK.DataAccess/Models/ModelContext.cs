@@ -78,13 +78,6 @@ namespace CK.DataAccess.Models
                     .ValueGeneratedOnAdd()
                     .HasColumnName("CONTRASENA");
 
-                entity.Property(e => e.Estado)
-                    .IsRequired()
-                    .HasPrecision(1)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("ESTADO")
-                    .HasDefaultValueSql("1 ");
-
                 entity.Property(e => e.FechaActualizacion)
                     .HasColumnType("DATE")
                     .ValueGeneratedOnAdd()
