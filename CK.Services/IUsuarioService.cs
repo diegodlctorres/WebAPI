@@ -12,5 +12,9 @@ namespace CK.Services
         Task<ResponseService<List<CkUser>>> Listar();
         Task<ResponseService<CkUser>> BuscarPorCodFuncionario(decimal codFuncionario);
 
+        Task<ResponseService<Efic050>> BuscarEfic050CodFuncionatio(decimal codFuncionaio);
+
+        Task<ResponseService<AppUserLogin>> GetValidateCkUser(AppUserLogin userlogeado);
+
     }
 }
