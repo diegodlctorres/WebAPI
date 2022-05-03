@@ -126,9 +126,17 @@ namespace CK.Services
             var respuesta = new ResponseService<AppUserAccess>();
             var userlogin = await context.AppUserAccesses.FirstOrDefaultAsync(x => x.CodFuncionario == codFuncionario);
             var hora = System.DateTime.Now;
-            userlogin.UltimoAcceso = hora;
-            respuesta.Objeto = userlogin;
-            await context.SaveChangesAsync();
+            if(userlogin != null)
+            {
+                userlogin.UltimoAcceso = hora;
+
+                respuesta.Objeto = userlogin;
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                respuesta.AgregarBadRequest("Usuario no registrado, comunicarse con sistemas.");
+            }
             return respuesta;
 
         }

@@ -53,8 +53,8 @@ namespace CK.WebAPI.Controllers
                 return StatusCode(retorno.Status, retorno.Error);
         }
 
-        [HttpPost("movil/{cf}/{contra}")]
-        public async Task<ActionResult<UserLogeadoDTO>> Login(int cf , decimal contra)
+        [HttpGet("getlogin/{cf}/{contra}")]
+        public async Task<ActionResult<UserLogeadoDTO>> GetLogin(int cf, decimal contra)
         {
             UserLogeadoDTO userlogeado = new UserLogeadoDTO();
             userlogeado.CodFuncionario = cf;
@@ -93,13 +93,53 @@ namespace CK.WebAPI.Controllers
             }
         }
 
-        [HttpPost("sp/{cf}/{contra}")]
-        public async Task<ActionResult<UserLogeadoDTO>> IniciarSesión(int cf, decimal contra)
+        [HttpPost("movil")]
+        public async Task<ActionResult<UserLogeadoDTO>> Login(UserLogeadoDTO userlogeado)
         {
-            UserLogeadoDTO userlogeado = new UserLogeadoDTO();
+            /*UserLogeadoDTO userlogeado = new UserLogeadoDTO();
             userlogeado.CodFuncionario = cf;
-            userlogeado.Contrasena = contra;
-            var ckuser = await service.GetAppUserCodFuncionario((decimal)cf);
+            userlogeado.Contrasena = contra;*/
+            var ckuser = await service.BuscarPorCodFuncionario((decimal)userlogeado.CodFuncionario);
+            if (ckuser.Error != null)
+            {
+                var efic050 = await service.BuscarEfic050CodFuncionatio((decimal)userlogeado.CodFuncionario);
+                if (efic050.Error != null)
+                {
+                    return StatusCode(efic050.Status, efic050.Error);
+                }
+                else
+                {
+                    return StatusCode(ckuser.Status, ckuser.Error);
+                }
+            }
+            else
+            {
+                var ckuserTrue = await service.GetValidateCkUser(Mapper.ToModel(userlogeado));
+                if (ckuserTrue.Error != null)
+                {
+                    return StatusCode(ckuserTrue.Status, ckuserTrue.Error);
+                }
+                else
+                {
+                    var efic050 = await service.BuscarEfic050CodFuncionatio((decimal)userlogeado.CodFuncionario);
+                    UserLogeadoDTO usuario = new UserLogeadoDTO
+                    {
+                        CodFuncionario = efic050.Objeto.CodFuncionario,
+                        Contrasena = (int)ckuser.Objeto.ClaveAlt,
+                        Nome = efic050.Objeto.Nome
+                    };
+                    return ckuserTrue.Objeto.ToDataTransferObject();
+                }
+            }
+        }
+
+        [HttpPost("sp")]
+        public async Task<ActionResult<UserLogeadoDTO>> IniciarSesión(UserLogeadoDTO userlogeado)
+        {
+            /*UserLogeadoDTO userlogeado = new UserLogeadoDTO();
+            userlogeado.CodFuncionario = cf;
+            userlogeado.Contrasena = contra;*/
+            var ckuser = await service.GetAppUserCodFuncionario((decimal)userlogeado.CodFuncionario);
             if (ckuser.Error != null)
             {
                 var efic050 = await service.BuscarEfic050CodFuncionatio((decimal)userlogeado.CodFuncionario);
@@ -121,7 +161,42 @@ namespace CK.WebAPI.Controllers
                 }
                 else
                 {
-                    await service.HoraIngreso(cf);
+                    await service.HoraIngreso(userlogeado.CodFuncionario);
+                    return ckuserTrue.Objeto.ToDataTransferObject();
+                }
+            }
+
+        }
+
+        [HttpGet("login/{cf}/{contra}")]
+        public async Task<ActionResult<UserLogeadoDTO>> IniciarSesión02(int cf, decimal contra)
+        {
+            UserLogeadoDTO userlogeado = new UserLogeadoDTO();
+            userlogeado.CodFuncionario = cf;
+            userlogeado.Contrasena = contra;
+            var ckuser = await service.GetAppUserCodFuncionario((decimal)userlogeado.CodFuncionario);
+            if (ckuser.Error != null)
+            {
+                var efic050 = await service.BuscarEfic050CodFuncionatio((decimal)userlogeado.CodFuncionario);
+                if (efic050.Error != null)
+                {
+                    return StatusCode(efic050.Status, efic050.Error);
+                }
+                else
+                {
+                    return StatusCode(ckuser.Status, ckuser.Error);
+                }
+            }
+            else
+            {
+                var ckuserTrue = await service.GetIniciarSesion(Mapper.ToModel(userlogeado));
+                if (ckuserTrue.Error != null)
+                {
+                    return StatusCode(ckuserTrue.Status, ckuser.Error);
+                }
+                else
+                {
+                    await service.HoraIngreso(userlogeado.CodFuncionario);
                     return ckuserTrue.Objeto.ToDataTransferObject();
                 }
             }
