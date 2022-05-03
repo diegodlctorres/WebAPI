@@ -11,11 +11,8 @@ namespace CK.Services
     {
         Task<ResponseService<List<CkUser>>> Listar();
         Task<ResponseService<CkUser>> BuscarPorCodFuncionario(decimal codFuncionario);
-
         Task<ResponseService<Usuario>> BuscarEfic050CodFuncionatio(decimal codFuncionaio);
-
         Task<ResponseService<Usuario>> GetValidateCkUser(Usuario userlogeado);
-
         Task<ResponseService<Usuario>> GetAppUserCodFuncionario(decimal codFuncionario);
         Task<ResponseService<Usuario>> GetIniciarSesion(Usuario userlogeado);
         Task<ResponseService<AppUserAccess>> HoraIngreso(decimal codFuncionario);
