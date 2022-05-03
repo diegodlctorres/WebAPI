@@ -156,6 +156,7 @@ namespace CK.WebAPI.Mappings
                 CodFuncionario = model.CodFuncionario,
                 Contrasena=model.Contrasena ,
                 Nome = model.Nome,
+                Mensaje = model.Mensaje
              };
         }
     }
@@ -169,6 +170,7 @@ namespace CK.WebAPI.Mappings
                 CodFuncionario = dto.CodFuncionario,
                 Contrasena = dto.Contrasena,
                 Nome = dto.Nome,
+                Mensaje = dto.Mensaje
             };
         }
     }

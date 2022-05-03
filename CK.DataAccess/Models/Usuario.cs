@@ -11,5 +11,6 @@ namespace CK.DataAccess.Models
         public decimal CodFuncionario { get; set; }
         public decimal Contrasena { get; set; }
         public string Nome { get; set; }
+        public string Mensaje { get; set; }
     }
 }

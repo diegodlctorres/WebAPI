@@ -41,15 +41,28 @@ namespace CK.Services
             return respuesta;
         }
 
-        public async Task<ResponseService<Efic050>> BuscarEfic050CodFuncionatio(decimal codFuncionario)
+        public async Task<ResponseService<Usuario>> BuscarEfic050CodFuncionatio(decimal codFuncionario)
         {
-            var respuesta = new ResponseService<Efic050>();
+            var respuesta = new ResponseService<Usuario>();
             var usuario = await context.Efic050s.FirstOrDefaultAsync(x => x.CodFuncionario == codFuncionario);
 
             if (usuario != null)
-                respuesta.Objeto = usuario;
+            {
+                Usuario app = new Usuario()
+                {
+                    CodFuncionario = (decimal)usuario.CodFuncionario,
+                    //Contrasena = (int)usuario.ClaveAlt,
+                    Nome = usuario.Nome
+                };
+                respuesta.Objeto = app;
+            }
             else
-                respuesta.AgregarBadRequest("Código de Funcionario Inexistente.");
+            {
+                Usuario app = new Usuario();
+                respuesta.Objeto = app;
+                respuesta.Objeto.Mensaje = "Código de Funcionario Inexistente.";
+            }
+                //respuesta.AgregarBadRequest("Código de Funcionario Inexistente.");
 
             return respuesta;
         }
@@ -75,22 +88,33 @@ namespace CK.Services
             }
             else
             {
-                respuesta.AgregarBadRequest("Codigo de funcionario y contraseña no coinciden.");
+                //respuesta.AgregarBadRequest("Codigo de funcionario y contraseña no coinciden.");
+                Usuario app = new Usuario();
+                respuesta.Objeto = app;
+                respuesta.Objeto.Mensaje = "Codigo de funcionario y contraseña no coinciden.";
             }
             return respuesta;
         }
 
-        public async Task<ResponseService<AppUser>> GetAppUserCodFuncionario(decimal codFuncionario)
+        public async Task<ResponseService<Usuario>> GetAppUserCodFuncionario(decimal codFuncionario)
         {
-            var respuesta = new ResponseService<AppUser>();
+            var respuesta = new ResponseService<Usuario>();
             var userlogin = await context.AppUsers.FirstOrDefaultAsync(x => x.CodFuncionario == codFuncionario);
             if (userlogin != null)
             {
-                respuesta.Objeto = userlogin;
+                Usuario resultado = new Usuario()
+                {
+                    Contrasena = userlogin.Contrasena,
+                    CodFuncionario = userlogin.CodFuncionario,                 
+                };
+                respuesta.Objeto = resultado;
             }
             else
             {
-                respuesta.AgregarBadRequest("Usuario no registrado, comunicarse con sistemas.");
+                //respuesta.AgregarBadRequest("Usuario no registrado, comunicarse con sistemas.");
+                Usuario app = new Usuario();
+                respuesta.Objeto = app;
+                respuesta.Objeto.Mensaje = "Usuario no registrado, comunicarse con sistemas.";
             }
             return respuesta;
         }
@@ -116,7 +140,10 @@ namespace CK.Services
             }
             else
             {
-                respuesta.AgregarBadRequest("Código de colaborador y contraseña no coinciden.");
+                //respuesta.AgregarBadRequest("Código de colaborador y contraseña no coinciden.");
+                Usuario app = new Usuario();
+                respuesta.Objeto = app;
+                respuesta.Objeto.Mensaje = "Código de colaborador y contraseña no coinciden.";
             }
             return respuesta;
         }

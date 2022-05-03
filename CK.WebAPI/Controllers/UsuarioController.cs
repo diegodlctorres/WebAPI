@@ -42,7 +42,7 @@ namespace CK.WebAPI.Controllers
                 return StatusCode(retorno.Status, retorno.Error);
         }
 
-        [HttpGet("efic050/{codFuncionario02}")]
+        /*[HttpGet("efic050/{codFuncionario02}")]
         public async Task<ActionResult<Efic050DTO>> BuscarEfic050CodFuncionatio(decimal codFuncionario02)
         {
             var retorno = await service.BuscarEfic050CodFuncionatio(codFuncionario02);
@@ -51,7 +51,7 @@ namespace CK.WebAPI.Controllers
                 return retorno.Objeto.ToDataTransferObject();
             else
                 return StatusCode(retorno.Status, retorno.Error);
-        }
+        }*/
 
         [HttpGet("getlogin/{cf}/{contra}")]
         public async Task<ActionResult<UserLogeadoDTO>> GetLogin(int cf, decimal contra)
@@ -175,24 +175,27 @@ namespace CK.WebAPI.Controllers
             userlogeado.CodFuncionario = cf;
             userlogeado.Contrasena = contra;
             var ckuser = await service.GetAppUserCodFuncionario((decimal)userlogeado.CodFuncionario);
-            if (ckuser.Error != null)
+            if (ckuser.Objeto.Mensaje != null)
             {
                 var efic050 = await service.BuscarEfic050CodFuncionatio((decimal)userlogeado.CodFuncionario);
-                if (efic050.Error != null)
+                if (efic050.Objeto.Mensaje != null)
                 {
-                    return StatusCode(efic050.Status, efic050.Error);
+                    //return StatusCode(efic050.Status, efic050.Error);
+                    return efic050.Objeto.ToDataTransferObject();
                 }
                 else
                 {
-                    return StatusCode(ckuser.Status, ckuser.Error);
+                    //return StatusCode(ckuser.Status, ckuser.Error);
+                    return ckuser.Objeto.ToDataTransferObject();
                 }
             }
             else
             {
                 var ckuserTrue = await service.GetIniciarSesion(Mapper.ToModel(userlogeado));
-                if (ckuserTrue.Error != null)
+                if (ckuserTrue.Objeto.Mensaje != null)
                 {
-                    return StatusCode(ckuserTrue.Status, ckuser.Error);
+                    //return StatusCode(ckuserTrue.Status, ckuser.Error);
+                    return ckuserTrue.Objeto.ToDataTransferObject();
                 }
                 else
                 {
