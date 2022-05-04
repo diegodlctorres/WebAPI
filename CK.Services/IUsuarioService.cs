@@ -9,7 +9,6 @@ namespace CK.Services
 {
     public interface IUsuarioService
     {
-        Task<ResponseService<List<CkUser>>> Listar();
         Task<ResponseService<CkUser>> BuscarPorCodFuncionario(decimal codFuncionario);
         Task<ResponseService<Usuario>> BuscarEfic050CodFuncionatio(decimal codFuncionaio);
         Task<ResponseService<Usuario>> GetValidateCkUser(Usuario userlogeado);

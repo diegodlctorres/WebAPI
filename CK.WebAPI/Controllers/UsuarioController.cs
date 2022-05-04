@@ -19,21 +19,9 @@ namespace CK.WebAPI.Controllers
             this.service = service;
         }
 
-        //Lista de Usuarios de Ck_User
-        [HttpGet]
-        public async Task<ActionResult<List<UsuarioDTO>>> Listar()
-        {
-            var retorno = await service.Listar();
-
-            if (retorno.Objeto != null)
-                return retorno.Objeto.Select(Mapper.ToDataTransferObject).ToList();
-            else
-                return StatusCode(retorno.Status, retorno.Error);
-        }
-
         //POST para el usuario login en la app móvil.
         [HttpPost("movil")]
-        public async Task<ActionResult<UserLogeadoDTO>> Login(UserLogeadoDTO userlogeado)
+        public async Task<ActionResult<UsuarioDTO>> Login(UsuarioDTO userlogeado)
         {
             var ckuser = await service.BuscarPorCodFuncionario((decimal)userlogeado.CodFuncionario);
             if (ckuser.Error != null)
@@ -58,7 +46,7 @@ namespace CK.WebAPI.Controllers
                 else
                 {
                     var efic050 = await service.BuscarEfic050CodFuncionatio((decimal)userlogeado.CodFuncionario);
-                    UserLogeadoDTO usuario = new UserLogeadoDTO
+                    UsuarioDTO usuario = new UsuarioDTO
                     {
                         CodFuncionario = efic050.Objeto.CodFuncionario,
                         Contrasena = (int)ckuser.Objeto.ClaveAlt,
@@ -71,9 +59,9 @@ namespace CK.WebAPI.Controllers
 
         //Obtener Login para el Usuario en la App móvil según la tabla AppUser y EFIC_050.
         [HttpGet("login/{codFuncionario}/{contrasena}")]
-        public async Task<ActionResult<UserLogeadoDTO>> IniciarSesión02(int codFuncionario, decimal contrasena)
+        public async Task<ActionResult<UsuarioDTO>> IniciarSesión02(int codFuncionario, decimal contrasena)
         {
-            UserLogeadoDTO userlogeado = new UserLogeadoDTO();
+            UsuarioDTO userlogeado = new UsuarioDTO();
             userlogeado.CodFuncionario = codFuncionario;
             userlogeado.Contrasena = contrasena;
             var ckuser = await service.GetAppUserCodFuncionario((decimal)userlogeado.CodFuncionario);

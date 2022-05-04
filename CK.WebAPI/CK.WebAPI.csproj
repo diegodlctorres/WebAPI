@@ -16,6 +16,7 @@
     <ProjectReference Include="..\CK.DataAccess\CK.DataAccess.csproj" />
     <ProjectReference Include="..\CK.DataTransferObject\CK.DataTransferObject.csproj" />
     <ProjectReference Include="..\CK.Services\CK.Services.csproj" />
+    <ProjectReference Include="..\CK.SPAccess\CK.SPAccess.csproj" />
   </ItemGroup>
 
 </Project>

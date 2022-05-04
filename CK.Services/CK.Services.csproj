@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CK.DataAccess\CK.DataAccess.csproj" />
+    <ProjectReference Include="..\CK.SPAccess\CK.SPAccess.csproj" />
   </ItemGroup>
 
 </Project>
