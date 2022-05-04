@@ -38,6 +38,7 @@ namespace CK.WebAPI
             });
 
             services.AddTransient<IUsuarioService, UsuarioService>();
+            services.AddTransient<IConsultarCajaService, ConsultarCajaService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

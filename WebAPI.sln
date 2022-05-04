@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WebAPI", "CK.WebAPI\CK.WebAPI.csproj", "{50C253DA-3E77-4678-8FD8-8D849499AE0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CK.WebAPI", "CK.WebAPI\CK.WebAPI.csproj", "{50C253DA-3E77-4678-8FD8-8D849499AE0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.DataAccess", "CK.DataAccess\CK.DataAccess.csproj", "{B343C29D-DD47-40BD-A5C4-E7A315B1C0B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CK.DataAccess", "CK.DataAccess\CK.DataAccess.csproj", "{B343C29D-DD47-40BD-A5C4-E7A315B1C0B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Services", "CK.Services\CK.Services.csproj", "{2257BFED-CE81-4D83-802E-F7241FDA8FDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CK.Services", "CK.Services\CK.Services.csproj", "{2257BFED-CE81-4D83-802E-F7241FDA8FDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.DataTransferObject", "CK.DataTransferObject\CK.DataTransferObject.csproj", "{EFBD818A-287A-4922-81DA-ADF692EF359A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CK.DataTransferObject", "CK.DataTransferObject\CK.DataTransferObject.csproj", "{EFBD818A-287A-4922-81DA-ADF692EF359A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.SPAccess", "CK.SPAccess\CK.SPAccess.csproj", "{379BD022-AA75-4B4D-8437-65F04CC58005}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{EFBD818A-287A-4922-81DA-ADF692EF359A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFBD818A-287A-4922-81DA-ADF692EF359A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFBD818A-287A-4922-81DA-ADF692EF359A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{379BD022-AA75-4B4D-8437-65F04CC58005}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{379BD022-AA75-4B4D-8437-65F04CC58005}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{379BD022-AA75-4B4D-8437-65F04CC58005}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{379BD022-AA75-4B4D-8437-65F04CC58005}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

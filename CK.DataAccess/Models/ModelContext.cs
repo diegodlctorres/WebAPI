@@ -17,20 +17,110 @@ namespace CK.DataAccess.Models
         {
         }
 
+        public virtual DbSet<AppMobileInfo> AppMobileInfos { get; set; }
+        public virtual DbSet<AppUser> AppUsers { get; set; }
+        public virtual DbSet<AppUserAccess> AppUserAccesses { get; set; }
         public virtual DbSet<CkPerfil> CkPerfils { get; set; }
         public virtual DbSet<CkUser> CkUsers { get; set; }
         public virtual DbSet<Efic050> Efic050s { get; set; }
-        public virtual DbSet<Fatu100> Fatu100s { get; set; }
-        public virtual DbSet<Pcpc300> Pcpc300s { get; set; }
-        public virtual DbSet<Pcpc320> Pcpc320s { get; set; }
-        public virtual DbSet<Pcpc321> Pcpc321s { get; set; }
-        public virtual DbSet<Pcpc325> Pcpc325s { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("USYSTEX");
+
+            modelBuilder.Entity<AppMobileInfo>(entity =>
+            {
+                entity.HasKey(e => e.Codigo)
+                    .HasName("APP_MOBILE_INFO_PK");
+
+                entity.ToTable("APP_MOBILE_INFO");
+
+                entity.Property(e => e.Codigo)
+                    .HasColumnType("NUMBER(38)")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("CODIGO");
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE");
+
+                entity.Property(e => e.Repositorio)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("REPOSITORIO");
+
+                entity.Property(e => e.Version)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("VERSION");
+            });
+
+            modelBuilder.Entity<AppUser>(entity =>
+            {
+                entity.HasKey(e => e.CodFuncionario)
+                    .HasName("APP_USER_PK");
+
+                entity.ToTable("APP_USER");
+
+                entity.Property(e => e.CodFuncionario)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("COD_FUNCIONARIO");
+
+                entity.Property(e => e.Contrasena)
+                    .HasColumnType("NUMBER(38)")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("CONTRASENA");
+
+                entity.Property(e => e.FechaActualizacion)
+                    .HasColumnType("DATE")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("FECHA_ACTUALIZACION")
+                    .HasDefaultValueSql("SYSDATE ");
+
+                entity.Property(e => e.FechaRegistro)
+                    .HasColumnType("DATE")
+                    .HasColumnName("FECHA_REGISTRO")
+                    .HasDefaultValueSql("SYSDATE ");
+
+                entity.Property(e => e.UsuarioActualizacion)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("USUARIO_ACTUALIZACION");
+
+                entity.Property(e => e.UsuarioRegistro)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("USUARIO_REGISTRO");
+            });
+
+            modelBuilder.Entity<AppUserAccess>(entity =>
+            {
+                entity.HasKey(e => e.CodFuncionario)
+                    .HasName("APP_USER_ACCESS_PK");
+
+                entity.ToTable("APP_USER_ACCESS");
+
+                entity.Property(e => e.CodFuncionario)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("COD_FUNCIONARIO");
+
+                entity.Property(e => e.CodigoApp)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("CODIGO_APP");
+
+                entity.Property(e => e.UltimoAcceso)
+                    .HasColumnType("DATE")
+                    .HasColumnName("ULTIMO_ACCESO");
+            });
 
             modelBuilder.Entity<CkPerfil>(entity =>
             {
@@ -352,697 +442,7 @@ namespace CK.DataAccess.Models
                     .HasColumnName("TURNO");
             });
 
-            modelBuilder.Entity<Fatu100>(entity =>
-            {
-                entity.HasKey(e => e.CodigoEmbalagem);
-
-                entity.ToTable("FATU_100");
-
-                entity.Property(e => e.CodigoEmbalagem)
-                    .HasPrecision(3)
-                    .HasColumnName("CODIGO_EMBALAGEM")
-                    .HasDefaultValueSql("0 ");
-
-                entity.Property(e => e.AlteraQtdeEmb)
-                    .HasPrecision(1)
-                    .HasColumnName("ALTERA_QTDE_EMB")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.Alternativa)
-                    .HasPrecision(3)
-                    .HasColumnName("ALTERNATIVA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.Apresentacao)
-                    .HasMaxLength(25)
-                    .IsUnicode(false)
-                    .HasColumnName("APRESENTACAO")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.Descricao)
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("DESCRICAO")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.Dimensoes)
-                    .HasMaxLength(15)
-                    .IsUnicode(false)
-                    .HasColumnName("DIMENSOES")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.MetrosCubicosEmb)
-                    .HasColumnType("NUMBER(11,5)")
-                    .HasColumnName("METROS_CUBICOS_EMB")
-                    .HasDefaultValueSql("0.00000");
-
-                entity.Property(e => e.PesoEmbalagem)
-                    .HasColumnType("NUMBER(8,4)")
-                    .HasColumnName("PESO_EMBALAGEM")
-                    .HasDefaultValueSql("0.0");
-
-                entity.Property(e => e.PesoFixo)
-                    .HasColumnType("NUMBER(9,4)")
-                    .HasColumnName("PESO_FIXO")
-                    .HasDefaultValueSql("0.00");
-
-                entity.Property(e => e.PesoMaximo)
-                    .HasColumnType("NUMBER(13,4)")
-                    .HasColumnName("PESO_MAXIMO")
-                    .HasDefaultValueSql("0.0000");
-
-                entity.Property(e => e.PesoMinimo)
-                    .HasColumnType("NUMBER(13,4)")
-                    .HasColumnName("PESO_MINIMO")
-                    .HasDefaultValueSql("0.0000");
-
-                entity.Property(e => e.PesoPcEmb)
-                    .HasColumnType("NUMBER(9,4)")
-                    .HasColumnName("PESO_PC_EMB")
-                    .HasDefaultValueSql("0.00");
-
-                entity.Property(e => e.QtdePecasEmb)
-                    .HasColumnType("NUMBER(15,3)")
-                    .HasColumnName("QTDE_PECAS_EMB")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.UmMedDimensao)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("UM_MED_DIMENSAO")
-                    .HasDefaultValueSql("''");
-            });
-
-            modelBuilder.Entity<Pcpc300>(entity =>
-            {
-                entity.HasKey(e => e.CodTipoVolume);
-
-                entity.ToTable("PCPC_300");
-
-                entity.HasIndex(e => new { e.Caracteristica, e.CodTipoVolume }, "PCPC_300_20");
-
-                entity.Property(e => e.CodTipoVolume)
-                    .HasPrecision(6)
-                    .HasColumnName("COD_TIPO_VOLUME")
-                    .HasDefaultValueSql("0 ");
-
-                entity.Property(e => e.Caracteristica)
-                    .HasPrecision(2)
-                    .HasColumnName("CARACTERISTICA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.CodEmbalagem)
-                    .HasPrecision(3)
-                    .HasColumnName("COD_EMBALAGEM")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.CodPacoteCliente)
-                    .HasMaxLength(15)
-                    .IsUnicode(false)
-                    .HasColumnName("COD_PACOTE_CLIENTE")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.Descricao)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("DESCRICAO")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.FormaMontagem)
-                    .HasPrecision(1)
-                    .HasColumnName("FORMA_MONTAGEM")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.IndControlaPeso)
-                    .HasMaxLength(1)
-                    .IsUnicode(false)
-                    .HasColumnName("IND_CONTROLA_PESO")
-                    .HasDefaultValueSql("'S'");
-
-                entity.Property(e => e.ObsPrePack1)
-                    .HasMaxLength(25)
-                    .IsUnicode(false)
-                    .HasColumnName("OBS_PRE_PACK1")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.ObsPrePack2)
-                    .HasMaxLength(25)
-                    .IsUnicode(false)
-                    .HasColumnName("OBS_PRE_PACK2")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.ObsPrePack3)
-                    .HasMaxLength(25)
-                    .IsUnicode(false)
-                    .HasColumnName("OBS_PRE_PACK3")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.ObsPrePack4)
-                    .HasMaxLength(25)
-                    .IsUnicode(false)
-                    .HasColumnName("OBS_PRE_PACK4")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.QtdePecas)
-                    .HasPrecision(6)
-                    .HasColumnName("QTDE_PECAS")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.Transacao)
-                    .HasPrecision(3)
-                    .HasColumnName("TRANSACAO")
-                    .HasDefaultValueSql("0");
-            });
-
-            modelBuilder.Entity<Pcpc320>(entity =>
-            {
-                entity.HasKey(e => e.NumeroVolume);
-
-                entity.ToTable("PCPC_320");
-
-                entity.HasIndex(e => e.DataMontagem, "DATA_MONTAGEM_IDX");
-
-                entity.HasIndex(e => new { e.NroDespacho, e.PedidoVenda }, "I_PCPC_320");
-
-                entity.HasIndex(e => new { e.PedidoVenda, e.NroDespacho, e.SituacaoVolume, e.DepositoEntrada }, "I_PCPC_320_02");
-
-                entity.HasIndex(e => new { e.PreRomaneio, e.SituacaoVolume, e.NumeroPrePack }, "I_PCPC_320_03");
-
-                entity.HasIndex(e => new { e.NumeroVolume, e.DepositoEntrada, e.SituacaoVolume, e.NumeroPrePack }, "JT_INDEX");
-
-                entity.HasIndex(e => new { e.CodTipoVolume, e.PedidoVenda, e.NotaFiscal, e.NrSolicitacao, e.NumeroVolume }, "PCPC_320_20");
-
-                entity.HasIndex(e => e.EnderecoCaixaPeca, "PCPC_320_END");
-
-                entity.HasIndex(e => e.NumeroPrePack, "PCPC_320_PRE_PACK");
-
-                entity.Property(e => e.NumeroVolume)
-                    .HasPrecision(9)
-                    .HasColumnName("NUMERO_VOLUME")
-                    .HasDefaultValueSql("0 ");
-
-                entity.Property(e => e.Cnpj2Entrada)
-                    .HasPrecision(2)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("CNPJ2_ENTRADA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.Cnpj4Entrada)
-                    .HasPrecision(4)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("CNPJ4_ENTRADA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.Cnpj9Entrada)
-                    .HasPrecision(9)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("CNPJ9_ENTRADA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.CodCancelamento)
-                    .HasPrecision(3)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("COD_CANCELAMENTO")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.CodEmbalagem)
-                    .HasPrecision(3)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("COD_EMBALAGEM")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.CodEmbarque)
-                    .HasPrecision(9)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("COD_EMBARQUE")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.CodEmpresa)
-                    .HasPrecision(3)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("COD_EMPRESA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.CodTipoVolume)
-                    .HasPrecision(6)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("COD_TIPO_VOLUME")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.CodUsuario)
-                    .HasPrecision(5)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("COD_USUARIO")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.DataCancelamento)
-                    .HasColumnType("DATE")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("DATA_CANCELAMENTO");
-
-                entity.Property(e => e.DataMontagem)
-                    .HasColumnType("DATE")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("DATA_MONTAGEM");
-
-                entity.Property(e => e.DepositoEntrada)
-                    .HasPrecision(3)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("DEPOSITO_ENTRADA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.DepositoSaida)
-                    .HasColumnType("NUMBER")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("DEPOSITO_SAIDA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.EmpresaNotaEntrada)
-                    .HasPrecision(9)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("EMPRESA_NOTA_ENTRADA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.EmpresaTransf)
-                    .HasPrecision(3)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("EMPRESA_TRANSF")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.EnderecoCaixaPeca)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("ENDERECO_CAIXA_PECA")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.ExecutaTrigger)
-                    .HasPrecision(1)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("EXECUTA_TRIGGER");
-
-                entity.Property(e => e.FlgAuditado)
-                    .HasPrecision(1)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("FLG_AUDITADO")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.FlgImpreso)
-                    .HasPrecision(1)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("FLG_IMPRESO")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.GrupoKit)
-                    .HasMaxLength(5)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("GRUPO_KIT")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.HoraMontagem)
-                    .HasColumnType("DATE")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("HORA_MONTAGEM");
-
-                entity.Property(e => e.ItemKit)
-                    .HasMaxLength(6)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("ITEM_KIT")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.LocalCaixa)
-                    .HasPrecision(1)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("LOCAL_CAIXA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.Montador)
-                    .HasPrecision(6)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("MONTADOR")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.NivelKit)
-                    .HasMaxLength(1)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NIVEL_KIT")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.NotaFiscal)
-                    .HasPrecision(9)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NOTA_FISCAL")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.NotaFiscalEntrada)
-                    .HasPrecision(9)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NOTA_FISCAL_ENTRADA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.NotaTransf)
-                    .HasPrecision(9)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NOTA_TRANSF")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.NrSolicitacao)
-                    .HasPrecision(6)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NR_SOLICITACAO")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.NroDespacho)
-                    .HasPrecision(6)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NRO_DESPACHO")
-                    .HasDefaultValueSql("1");
-
-                entity.Property(e => e.NumeroColetaFaturamento)
-                    .HasPrecision(9)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NUMERO_COLETA_FATURAMENTO")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.NumeroKit)
-                    .HasPrecision(6)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NUMERO_KIT")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.NumeroPrePack)
-                    .HasPrecision(9)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NUMERO_PRE_PACK")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.NumeroVolumeExp)
-                    .HasPrecision(9)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NUMERO_VOLUME_EXP")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.PedidoVenda)
-                    .HasPrecision(6)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("PEDIDO_VENDA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.PesoEmbalagem)
-                    .HasColumnType("NUMBER(12,2)")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("PESO_EMBALAGEM")
-                    .HasDefaultValueSql("0.00");
-
-                entity.Property(e => e.PesoVolume)
-                    .HasColumnType("NUMBER(10,2)")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("PESO_VOLUME")
-                    .HasDefaultValueSql("0.00");
-
-                entity.Property(e => e.PreRomaneio)
-                    .HasPrecision(6)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("PRE_ROMANEIO")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.QtdePecasSug)
-                    .HasPrecision(6)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("QTDE_PECAS_SUG")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.SerieNota)
-                    .HasMaxLength(3)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("SERIE_NOTA")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.SerieNotaEntrada)
-                    .HasMaxLength(3)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("SERIE_NOTA_ENTRADA")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.SerieTransf)
-                    .HasMaxLength(3)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("SERIE_TRANSF")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.SitAnterior)
-                    .HasPrecision(1)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("SIT_ANTERIOR")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.SituacaoKit)
-                    .HasPrecision(1)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("SITUACAO_KIT")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.SituacaoVolume)
-                    .HasPrecision(1)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("SITUACAO_VOLUME")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.SubKit)
-                    .HasMaxLength(3)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("SUB_KIT")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.TipoEndereco)
-                    .HasPrecision(9)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("TIPO_ENDERECO")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.TransacaoEntrada)
-                    .HasPrecision(3)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("TRANSACAO_ENTRADA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.TransacaoSaida)
-                    .HasColumnType("NUMBER")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("TRANSACAO_SAIDA")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.Turno)
-                    .HasPrecision(1)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("TURNO")
-                    .HasDefaultValueSql("0");
-            });
-
-            modelBuilder.Entity<Pcpc321>(entity =>
-            {
-                entity.HasKey(e => new { e.NumeroVolume, e.Nivel, e.Grupo, e.Sub, e.Item, e.PedidoVenda });
-
-                entity.ToTable("PCPC_321");
-
-                entity.HasIndex(e => e.NumeroVolume, "IDX_NUM_VOLUME");
-
-                entity.HasIndex(e => new { e.PedidoVenda, e.Nivel, e.Grupo, e.Sub, e.Item }, "PCPC_321_01");
-
-                entity.Property(e => e.NumeroVolume)
-                    .HasPrecision(9)
-                    .HasColumnName("NUMERO_VOLUME")
-                    .HasDefaultValueSql("0 ");
-
-                entity.Property(e => e.Nivel)
-                    .HasMaxLength(1)
-                    .IsUnicode(false)
-                    .HasColumnName("NIVEL")
-                    .HasDefaultValueSql("'' ");
-
-                entity.Property(e => e.Grupo)
-                    .HasMaxLength(5)
-                    .IsUnicode(false)
-                    .HasColumnName("GRUPO")
-                    .HasDefaultValueSql("'' ");
-
-                entity.Property(e => e.Sub)
-                    .HasMaxLength(3)
-                    .IsUnicode(false)
-                    .HasColumnName("SUB")
-                    .HasDefaultValueSql("'' ");
-
-                entity.Property(e => e.Item)
-                    .HasMaxLength(6)
-                    .IsUnicode(false)
-                    .HasColumnName("ITEM")
-                    .HasDefaultValueSql("'' ");
-
-                entity.Property(e => e.PedidoVenda)
-                    .HasPrecision(6)
-                    .HasColumnName("PEDIDO_VENDA")
-                    .HasDefaultValueSql("0 ");
-
-                entity.Property(e => e.OrdemConfeccao)
-                    .HasPrecision(5)
-                    .HasColumnName("ORDEM_CONFECCAO")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.PeriodoOrdem)
-                    .HasPrecision(4)
-                    .HasColumnName("PERIODO_ORDEM")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.QtdePecasReal)
-                    .HasPrecision(6)
-                    .HasColumnName("QTDE_PECAS_REAL")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.QtdePecasSug)
-                    .HasPrecision(6)
-                    .HasColumnName("QTDE_PECAS_SUG")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.SeqItemPedido)
-                    .HasPrecision(3)
-                    .HasColumnName("SEQ_ITEM_PEDIDO")
-                    .HasDefaultValueSql("0");
-            });
-
-            modelBuilder.Entity<Pcpc325>(entity =>
-            {
-                entity.HasKey(e => new { e.NumeroVolume, e.Nivel, e.Grupo, e.Sub, e.Item, e.PeriodoOrdem, e.OrdemConfeccao, e.SeqItemPedido });
-
-                entity.ToTable("PCPC_325");
-
-                entity.Property(e => e.NumeroVolume)
-                    .HasPrecision(9)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NUMERO_VOLUME")
-                    .HasDefaultValueSql("0 ");
-
-                entity.Property(e => e.Nivel)
-                    .HasMaxLength(1)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NIVEL")
-                    .HasDefaultValueSql("'' ");
-
-                entity.Property(e => e.Grupo)
-                    .HasMaxLength(5)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("GRUPO")
-                    .HasDefaultValueSql("'' ");
-
-                entity.Property(e => e.Sub)
-                    .HasMaxLength(3)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("SUB")
-                    .HasDefaultValueSql("'' ");
-
-                entity.Property(e => e.Item)
-                    .HasMaxLength(6)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("ITEM")
-                    .HasDefaultValueSql("'' ");
-
-                entity.Property(e => e.PeriodoOrdem)
-                    .HasPrecision(4)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("PERIODO_ORDEM")
-                    .HasDefaultValueSql("0 ");
-
-                entity.Property(e => e.OrdemConfeccao)
-                    .HasPrecision(5)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("ORDEM_CONFECCAO")
-                    .HasDefaultValueSql("0 ");
-
-                entity.Property(e => e.SeqItemPedido)
-                    .HasPrecision(3)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("SEQ_ITEM_PEDIDO")
-                    .HasDefaultValueSql("0 ");
-
-                entity.Property(e => e.ArtigoProduto)
-                    .HasPrecision(4)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("ARTIGO_PRODUTO")
-                    .HasDefaultValueSql("0 ");
-
-                entity.Property(e => e.ExecutaTrigger)
-                    .HasPrecision(1)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("EXECUTA_TRIGGER");
-
-                entity.Property(e => e.GrupoEstoque)
-                    .HasMaxLength(5)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("GRUPO_ESTOQUE")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.ItemEstoque)
-                    .HasMaxLength(6)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("ITEM_ESTOQUE")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.NivelEstoque)
-                    .HasMaxLength(1)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NIVEL_ESTOQUE")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.NumeroKit)
-                    .HasPrecision(6)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("NUMERO_KIT")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.QtdePecasReal)
-                    .HasPrecision(6)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("QTDE_PECAS_REAL")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.QtdePecasSug)
-                    .HasPrecision(6)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("QTDE_PECAS_SUG")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.QtdeQuilosEstoque)
-                    .HasColumnType("NUMBER(8,3)")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("QTDE_QUILOS_ESTOQUE")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.QtdeQuilosReal)
-                    .HasColumnType("NUMBER(11,3)")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("QTDE_QUILOS_REAL")
-                    .HasDefaultValueSql("0.000");
-
-                entity.Property(e => e.SubEstoque)
-                    .HasMaxLength(3)
-                    .IsUnicode(false)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("SUB_ESTOQUE")
-                    .HasDefaultValueSql("''");
-            });
+            modelBuilder.HasSequence("APP_MOBILE_INFO_SEQ");
 
             modelBuilder.HasSequence("ID_REPROG_TINTO");
 

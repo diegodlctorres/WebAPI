@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CK.DataTransferObject
+namespace CK.DataAccess.Models
 {
-    public class UsuarioDTO
+    public partial class Usuario
     {
         public decimal CodFuncionario { get; set; }
         public decimal Contrasena { get; set; }
