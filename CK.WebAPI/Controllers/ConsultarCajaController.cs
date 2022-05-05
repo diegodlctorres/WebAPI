@@ -26,6 +26,15 @@ namespace CK.WebAPI.Controllers
             return resultado;
         }
 
+        [HttpGet("Error")]
+        public async Task<object> MaicolFueError()
+        {
+            int cf = 50505;
+            int clave = 1234;
+            var resultado = await service.PruebaError(cf,clave);
+            return resultado;
+        }
+
 
     }
 }

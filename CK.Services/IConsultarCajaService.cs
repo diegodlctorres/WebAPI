@@ -9,5 +9,8 @@ namespace CK.Services
     public interface IConsultarCajaService
     {
         Task<object> Listar();
+
+        Task<object> PruebaError(int cf, int clave);
+
     }
 }
