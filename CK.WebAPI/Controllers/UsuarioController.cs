@@ -1,7 +1,10 @@
-﻿using CK.DataTransferObject;
+﻿using CK.DataAccess.Models;
+using CK.DataTransferObject;
 using CK.Services;
 using CK.WebAPI.Mappings;
 using Microsoft.AspNetCore.Mvc;
+using Oracle.ManagedDataAccess.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -94,6 +97,15 @@ namespace CK.WebAPI.Controllers
                 }
             }
 
+        }
+
+        //Login con Store Procedure (Empleado Actualmente)
+        [HttpGet("SPlogin/{codFuncionario}/{contrasena}")]
+        public async Task<Object> SpLogin(int codFuncionario, decimal contrasena)
+        {
+            var resultado = new ResponseService<Usuario>();
+            var resultado02 = await service.LoginSp((decimal)codFuncionario, contrasena);
+            return resultado02;
         }
     }
 }
