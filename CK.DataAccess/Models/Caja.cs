@@ -25,5 +25,7 @@ namespace CK.DataAccess.Models
         public int QTDE_PECAS_REAL { get; set; }
 
         public string DESCRIPCION { get; set; }
+
+        public string COLOR { get; set; }
     }
 }

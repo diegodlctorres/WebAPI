@@ -125,6 +125,7 @@ namespace CK.WebAPI.Mappings
                 aux.SUB = mdl.SUB;
                 aux.ITEM = mdl.ITEM;
                 aux.NIVEL = mdl.NIVEL;
+                aux.COLOR = mdl.COLOR;
                 cajaDtos.Add(aux);
             }
             return cajaDtos;
