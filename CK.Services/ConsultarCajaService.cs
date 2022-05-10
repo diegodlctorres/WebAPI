@@ -85,6 +85,7 @@ namespace CK.Services
                 caja.PEDIDO_VENDA = asd.PEDIDO_VENDA;
                 caja.QTDE_PECAS_REAL = asd.PEDIDO_VENDA;
                 caja.SUB = asd.SUB;
+                caja.COLOR = asd.COLOR;
                 AuxCajas.Add(caja);
             }
             return AuxCajas;
