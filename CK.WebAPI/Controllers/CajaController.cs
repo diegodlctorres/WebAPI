@@ -36,11 +36,6 @@ namespace CK.WebAPI.Controllers
 
 
             var resultado2 = new ResponseService<List<CajaDTO>>();
-            //{
-            //    Objeto = resultado.Objeto.ToDataTransferObject()
-            //};
-
-
 
             if (resultado.Objeto == null)
             {
@@ -59,10 +54,8 @@ namespace CK.WebAPI.Controllers
             CajaDTO cajas = new CajaDTO();
             var resultado = await service.traerCajas<Caja>(numCaja);
             //cambiar el responseService<list<cajaz>> a responseService<list<cajadto>>
-            //return resultado;
             return resultado;
         }
-
 
     }
 }

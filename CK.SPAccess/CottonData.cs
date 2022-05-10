@@ -101,7 +101,7 @@ namespace CK.SPAccess
         //}
         public IDbConnection GetConnection()
         {
-            string connectionString = "";//appJson().GetSection("ConnectionStrings").GetSection("BDConnection").Value.ToString();
+            string connectionString = "Data Source=192.168.0.51:1521/upruebas.cottonknit.com; User Id=USYSTEX; Password=oracle;";//appJson().GetSection("ConnectionStrings").GetSection("BDConnection").Value.ToString();
             var conn = new OracleConnection(connectionString);
             return conn;
         }
