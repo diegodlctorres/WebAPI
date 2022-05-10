@@ -41,7 +41,7 @@ namespace CK.SPAccess
             }
             catch (Exception ex)
             {
-                throw ex;
+                return ex;
             }
             return result;
         }
@@ -57,7 +57,6 @@ namespace CK.SPAccess
                 {
                     dyParam.Add(parametro[i].Nombre, parametro[i].Valor);
                 }
-                //dyParam.Add("PCURSOR", null, OracleMappingType.RefCursor, ParameterDirection.Output);
                 var conn = this.GetConnection();
 
                 if (conn.State == ConnectionState.Closed)
@@ -79,7 +78,7 @@ namespace CK.SPAccess
             return ber;
         }
 
-        public IEnumerable<T> GetDataClass<T>(string stored, DbParametro[] parametro)
+        public async Task<IEnumerable<T>> GetDataClass<T>(string stored, DbParametro[] parametro, string Nombrecursor = "PCURSOR")
         {
             var conn = GetConnection();
             conn.Open();
@@ -88,11 +87,13 @@ namespace CK.SPAccess
             {
                 p.Add(parametro[i].Nombre, parametro[i].Valor);
             }
-            p.Add("pcursor", dbType: OracleMappingType.RefCursor, direction: ParameterDirection.Output);
-            IEnumerable<T> obj = conn.Query<T>(stored, param: p, commandType: CommandType.StoredProcedure);
+            p.Add(Nombrecursor, dbType: OracleMappingType.RefCursor, direction: ParameterDirection.Output);
+            dynamic obj = await SqlMapper.QueryAsync<T>(conn, stored, param: p, commandType: CommandType.StoredProcedure);
             conn.Close();
             return obj;
         }
+
+
         //public IConfigurationRoot appJson()
         //{
         //    var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appSettings.json").Build();

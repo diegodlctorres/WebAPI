@@ -1,5 +1,6 @@
 ﻿using CK.DataAccess.Models;
 using CK.DataTransferObject;
+using System.Collections.Generic;
 
 namespace CK.WebAPI.Mappings
 {
@@ -104,6 +105,41 @@ namespace CK.WebAPI.Mappings
                 Nome = dto.Nome,
                 Mensaje = dto.Mensaje
             };
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static List<CajaDTO> ToDataTransferObject(this List<Caja> model)  // Convierte de DTO a ModelContext
+        {
+            List<CajaDTO> cajaDtos = new List<CajaDTO>();
+            foreach(var mdl in model)
+            {
+                CajaDTO aux = new CajaDTO();
+                aux.DEPOSITO_ENTRADA = mdl.DEPOSITO_ENTRADA;
+                aux.DESCRIPCION = mdl.DESCRIPCION;
+                aux.DESCRIPCION_DEPOSITO = mdl.DESCRIPCION_DEPOSITO;
+                aux.PEDIDO_VENDA = mdl.PEDIDO_VENDA;
+                aux.QTDE_PECAS_REAL = mdl.QTDE_PECAS_REAL;
+                aux.GRUPO = mdl.GRUPO;
+                aux.SUB = mdl.SUB;
+                aux.ITEM = mdl.ITEM;
+                aux.NIVEL = mdl.NIVEL;
+                cajaDtos.Add(aux);
+            }
+            return cajaDtos;
+            //return new CajaDTO()
+            //{
+            //    DEPOSITO_ENTRADA = model.DEPOSITO_ENTRADA,
+            //    DESCRIPCION = model.DESCRIPCION,
+            //    DESCRIPCION_DEPOSITO = model.DESCRIPCION_DEPOSITO,
+            //    PEDIDO_VENDA = model.PEDIDO_VENDA,
+            //    QTDE_PECAS_REAL = model.QTDE_PECAS_REAL,
+            //    GRUPO = model.GRUPO,
+            //    SUB = model.SUB,
+            //    ITEM = model.ITEM,
+            //    NIVEL = model.NIVEL
+            //};
         }
     }
 
