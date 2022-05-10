@@ -15,5 +15,6 @@ namespace CK.Services
         Task<ResponseService<Usuario>> GetAppUserCodFuncionario(decimal codFuncionario);
         Task<ResponseService<Usuario>> GetIniciarSesion(Usuario userlogeado);
         Task<ResponseService<AppUserAccess>> HoraIngreso(decimal codFuncionario);
+        Task<object> LoginSp(decimal codFuncionario, decimal constrasena);
     }
 }

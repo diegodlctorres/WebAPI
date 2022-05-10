@@ -105,6 +105,39 @@ namespace CK.SPAccess
             var conn = new OracleConnection(connectionString);
             return conn;
         }
+
+        public async Task<IEnumerable<dynamic>> getDynamic(string stored, DbParametro[] parametro, string pcursor = "PCURSOR")
+        {
+            IEnumerable<dynamic> result = null;
+            try
+            {
+                var dyParam = new OracleDynamicParameters();
+
+                for (int i = 0; i < parametro.Length; i++)
+                {
+                    dyParam.Add(parametro[i].Nombre, parametro[i].Valor);
+                }
+
+                dyParam.Add(pcursor, null, OracleMappingType.RefCursor, ParameterDirection.Output);
+                var conn = this.GetConnection();
+
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var query = stored;
+                    result = await SqlMapper.QueryAsync<dynamic>(conn, query, param: dyParam, commandType: CommandType.StoredProcedure);
+                }
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
     }
 }
 

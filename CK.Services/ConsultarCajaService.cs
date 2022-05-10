@@ -1,5 +1,6 @@
 ﻿using CK.DataAccess.Models;
 using CK.SPAccess;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,6 +88,28 @@ namespace CK.Services
                 AuxCajas.Add(caja);
             }
             return AuxCajas;
+        }
+        public async Task<object> PruebaError(int cf, int clave)
+        {
+            try
+            {
+                CottonData db = new CottonData();
+                DbParametro[] parameters = new DbParametro[3];
+                parameters[0] = new DbParametro("p_cod_funcionario", cf);
+                parameters[1] = new DbParametro("p_contrasena", clave);
+                parameters[2] = new DbParametro("p_codigo_aplicacion", 1);
+
+                var linea = await db.GetData("getck_app_login", parameters);//Nombre del store
+                return linea;
+            }
+            catch (OracleException e)
+            {
+                Error error = new Error(){
+                    Code = e.ErrorCode,
+                    Mensaje = e.Message
+                };
+                return error;
+            }           
         }
     }
 }
