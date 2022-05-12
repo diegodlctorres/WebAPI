@@ -29,27 +29,36 @@ namespace CK.Services
             return linea;
         }
 
-        public async Task<ResponseService<List<Caja>>> ConsultaCaja(int numCaja)
+        public async Task<object> ConsultaCaja(int numCaja)
         {
-            CottonData db = new CottonData();
-            DbParametro[] parameters = new DbParametro[1];
-            parameters[0] = new DbParametro("p_num_caja", numCaja);
-
-            var linea = await db.GetData("SP_CEL_ALM_SLD_PRD_CONSULTA", parameters, "curSQL");
-            
-            var RespuestaCaja = new ResponseService<List<Caja>>();
-
-            if (linea.GetType().Name.Contains("OracleException"))
+            try
             {
-                RespuestaCaja.Error = linea.ToString();
-                return RespuestaCaja;
+                CottonData db = new CottonData();
+                DbParametro[] parameters = new DbParametro[1];
+                parameters[0] = new DbParametro("p_num_caja", numCaja);
+
+                var linea = await db.GetData("SP_CEL_ALM_SLD_PRD_CONSULTA", parameters, "curSQL");
+
+                var RespuestaCaja = new ResponseService<List<Caja>>();
+
+
+                List<Caja> cajas = mapearCajas(linea);
+
+                RespuestaCaja.Objeto = cajas;
+
+                return RespuestaCaja.Objeto;
             }
+            catch (OracleException e)
+            {
 
-            List<Caja> cajas = mapearCajas(linea);
-
-            RespuestaCaja.Objeto = cajas;
-
-            return RespuestaCaja;
+                Error error = new Error()
+                {
+                    Code = e.ErrorCode,
+                    Mensaje = e.Message
+                };
+                return error;
+            }
+            
         }
 
         public async Task<ResponseService<IEnumerable<T>>> traerCajas<T>(int numCaja)
@@ -83,7 +92,7 @@ namespace CK.Services
                 caja.ITEM = asd.ITEM;
                 caja.NIVEL = asd.NIVEL;
                 caja.PEDIDO_VENDA = asd.PEDIDO_VENDA;
-                caja.QTDE_PECAS_REAL = asd.PEDIDO_VENDA;
+                caja.QTDE_PECAS_REAL = asd.QTDE_PECAS_REAL;
                 caja.SUB = asd.SUB;
                 caja.COLOR = asd.COLOR;
                 AuxCajas.Add(caja);

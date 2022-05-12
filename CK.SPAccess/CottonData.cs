@@ -41,7 +41,7 @@ namespace CK.SPAccess
             }
             catch (Exception ex)
             {
-                return ex;
+                throw ex;
             }
             return result;
         }
