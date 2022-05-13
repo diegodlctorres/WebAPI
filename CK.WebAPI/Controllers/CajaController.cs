@@ -20,12 +20,12 @@ namespace CK.WebAPI.Controllers
             this.service = service;
         }
 
-        [HttpGet("Listar")]
-        public async Task<object> ListarSPdelMongol()
-        {
-            var resultado = await service.Listar();
-            return resultado;
-        }
+        //[HttpGet("Listar")]
+        //public async Task<object> ListarSPdelMongol()
+        //{
+        //    var resultado = await service.Listar();
+        //    return resultado;
+        //}
 
         //[HttpGet("Consulta/{numCaja}")]
         //public async Task<object> ConsultaCaja(int numCaja)
