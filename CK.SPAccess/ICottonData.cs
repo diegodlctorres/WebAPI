@@ -7,9 +7,13 @@ namespace CK.SPAccess
 {
     public interface ICottonData
     {
-        Task<object> GetData(string stored, DbParametro[] parametro,string pcursor);
+        //Task<object> GetData(string stored, DbParametro[] parametro,string pcursor);
         Task<bool> SetData(string stored, DbParametro[] parametro);
 
-        Task<IEnumerable<dynamic>> getDynamic(string stored, DbParametro[] parametro, string pcursor);
+        Task<Object> GetDataClass<T>(string stored, DbParametro[] parametro, string Nombrecursor = "PCURSOR");
+
+        Task<Object> GetDataClassSingle<T>(string stored, DbParametro[] parametro, string Nombrecursor = "PCURSOR");
+
+        //Task<IEnumerable<dynamic>> getDynamic(string stored, DbParametro[] parametro, string pcursor);
     }
 }

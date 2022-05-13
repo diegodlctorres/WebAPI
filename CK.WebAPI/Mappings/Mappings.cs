@@ -110,7 +110,7 @@ namespace CK.WebAPI.Mappings
 
     public static partial class Mapper
     {
-        public static List<CajaDTO> ToDataTransferObject(this List<Caja> model)  // Convierte de DTO a ModelContext
+        public static IEnumerable<CajaDTO> ToDataTransferObject(this IEnumerable<Caja> model)  // Convierte de DTO a ModelContext
         {
             List<CajaDTO> cajaDtos = new List<CajaDTO>();
             foreach(var mdl in model)

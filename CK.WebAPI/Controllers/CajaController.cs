@@ -27,21 +27,30 @@ namespace CK.WebAPI.Controllers
             return resultado;
         }
 
+        //[HttpGet("Consulta/{numCaja}")]
+        //public async Task<object> ConsultaCaja(int numCaja)
+        //{
+        //    var resultado = await service.ConsultaCaja(numCaja);
+        //    return resultado;
+
+        //}
+
         [HttpGet("Consulta/{numCaja}")]
-        public async Task<object> ConsultaCaja(int numCaja)
+        public async Task<ResponseService<IEnumerable<CajaDTO>>> ConsultaCaja(int numCaja)
         {
-            var resultado = await service.ConsultaCaja(numCaja);
-            return resultado;
+            var response = new ResponseService<IEnumerable<CajaDTO>>();
+            var seeker = await service.ConsultaCaja<Caja>(numCaja);
 
-        }
+            if (seeker.Objeto != null)
+                response.Objeto = seeker.Objeto.ToDataTransferObject();
+            else
+                response.AgregarBadRequest(seeker.Error);
+            return response;
 
-        [HttpGet("Consulta2")]
-        public async Task<ResponseService<IEnumerable<Caja>>> traerCajas(int numCaja)
-        {
-            CajaDTO cajas = new CajaDTO();
-            var resultado = await service.traerCajas<Caja>(numCaja);
-            //cambiar el responseService<list<cajaz>> a responseService<list<cajadto>>
-            return resultado;
+            //CajaDTO cajas = new CajaDTO();
+            //var resultado = await service.ConsultaCaja<Caja>(numCaja);
+            ////cambiar el responseService<list<cajaz>> a responseService<list<cajadto>>
+            //return resultado;
         }
 
     }

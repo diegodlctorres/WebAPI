@@ -158,9 +158,9 @@ namespace CK.Services
 
         }
 
-        public async Task<object> LoginSp(decimal codFuncionario, decimal contrasena)
+        public async Task<ResponseService<T>> LoginSp<T>(decimal codFuncionario, decimal contrasena)
         {
-            var usuario = new ResponseService<Usuario>();
+            var respuestaUsuario = new ResponseService<T>();
             try
             {
                 CottonData db = new CottonData();
@@ -169,37 +169,53 @@ namespace CK.Services
                 parameters[1] = new DbParametro("p_contrasena", contrasena);
                 parameters[2] = new DbParametro("p_codigo_aplicacion", 1);
 
-                IEnumerable<dynamic> linea = await db.getDynamic("getck_app_login", parameters);//Nombre del store
+                
+                var linea = await db.GetDataClassSingle<T>("getck_app_login", parameters);//Nombre del store
 
-                mapear(linea, usuario);
-                Usuario app = new Usuario();
-                app = usuario.Objeto;
-
-                return usuario.Objeto;
-
-            }
-            catch (OracleException e)
-            {
-                Error error = new Error()
+                if (linea.GetType().Name.Contains("OracleException"))
                 {
-                    Code = e.ErrorCode,
-                    Mensaje = e.Message
-                };
-                return error;
+                    string messageError = ((dynamic)linea).Message;
+                    respuestaUsuario.AgregarBadRequest(messageError);// = messageError.Split("...")[0];
+                    return respuestaUsuario;
+                }
+
+                respuestaUsuario.Objeto = (T)linea;
+
+
+
+                //mapear(linea, usuario);
+                //Usuario app = new Usuario();
+                //app = usuario.Objeto;
+
+                //return usuario.Objeto;
+
+               // return respuestaUsuario;
+
             }
+            catch (Exception e)
+            {
+                respuestaUsuario.Error = e.Message;
+                //Error error = new Error()
+                //{
+                //    Code = e.ErrorCode,
+                //    Mensaje = e.Message
+                //};
+                //return respuestaUsuario;
+            }
+            return respuestaUsuario;
         }
 
-        public void mapear(IEnumerable<dynamic> resultado, ResponseService<Usuario> modelo)
-        {
-            Usuario app = new Usuario();
-            modelo.Objeto = app;
-            for (int i = 0; i < resultado.Count() ; i++)
-            {
-                modelo.Objeto.CodFuncionario = Convert.ToDecimal(resultado.ElementAt(i).COD_FUNCIONARIO);
-                modelo.Objeto.Contrasena = Convert.ToDecimal(resultado.ElementAt(i).CONTRASENA);
-                modelo.Objeto.Nome = resultado.ElementAt(i).NOME;
-            }
+        //public void mapear(IEnumerable<dynamic> resultado, ResponseService<Usuario> modelo)
+        //{
+        //    Usuario app = new Usuario();
+        //    modelo.Objeto = app;
+        //    for (int i = 0; i < resultado.Count() ; i++)
+        //    {
+        //        modelo.Objeto.CodFuncionario = Convert.ToDecimal(resultado.ElementAt(i).COD_FUNCIONARIO);
+        //        modelo.Objeto.Contrasena = Convert.ToDecimal(resultado.ElementAt(i).CONTRASENA);
+        //        modelo.Objeto.Nome = resultado.ElementAt(i).NOME;
+        //    }
             
-        }
+        //}
     }
 }

@@ -101,11 +101,16 @@ namespace CK.WebAPI.Controllers
 
         //Login con Store Procedure (Empleado Actualmente)
         [HttpGet("SPlogin/{codFuncionario}/{contrasena}")]
-        public async Task<Object> SpLogin(int codFuncionario, decimal contrasena)
+        public async Task<ResponseService<UsuarioDTO>> SpLogin(int codFuncionario, decimal contrasena)
         {
-            var resultado = new ResponseService<Usuario>();
-            var resultado02 = await service.LoginSp((decimal)codFuncionario, contrasena);
-            return resultado02;
+            var resultado = new ResponseService<UsuarioDTO>();
+            var resultado02 = await service.LoginSp<Usuario>((decimal)codFuncionario, contrasena);
+
+            if (resultado02.Objeto != null)
+                resultado.Objeto = resultado02.Objeto.ToDataTransferObject();
+            else
+                resultado.AgregarBadRequest(resultado02.Error);
+            return resultado;
         }
     }
 }
