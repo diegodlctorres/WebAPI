@@ -17,5 +17,11 @@ namespace CK.Services
 
         Task<object> PruebaError(int cf, int clave);
 
+        Task<object> MoverCajas(int p_num_caja, string p_cb_prenda, int p_tipo);
+
+        Task<object> MoverCajas02(MoverCaja mover);
+
+        Task<object> MoverCajas03(MoverCaja mover);
+
     }
 }

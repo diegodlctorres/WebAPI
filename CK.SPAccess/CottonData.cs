@@ -45,6 +45,73 @@ namespace CK.SPAccess
             }
             return result;
         }
+        public async Task<object> GetData02(string stored, DbParametro[] parametro)
+        {
+            object result = null;
+            try
+            {
+                var dyParam = new OracleDynamicParameters();
+
+                for (int i = 0; i < parametro.Length; i++)
+                {
+                    dyParam.Add(parametro[i].Nombre, parametro[i].Valor);
+                }
+                //OracleMappingType? aea = new OracleMappingType();
+                //dyParam.Add( parametro[4].Nombre,parametro[4].Valor,aea = null ,parametro[4].Direccion);
+                var conn = this.GetConnection();
+
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var query = stored;
+                    result = await SqlMapper.QueryAsync(conn, query, param: dyParam, commandType: CommandType.StoredProcedure);
+                }
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public async Task<object> GetData03(string stored, DbParametro[] parametro )
+        {
+            object result = null;
+            try
+            {
+                var dyParam = new OracleDynamicParameters();
+                var aux = 0;
+                for (int i = 0; i < parametro.Length - 1 ; i++)
+                {
+                    dyParam.Add(parametro[i].Nombre, parametro[i].Valor);
+                }
+                OracleMappingType? aea = new OracleMappingType();
+                //dyParam.Add( parametro[4].Nombre,parametro[4].Valor,OracleMappingType.Int16,parametro[4].Direccion);
+                dyParam.Add("p_new_caja", aux, OracleMappingType.Int16, ParameterDirection.Output);
+                var conn = this.GetConnection();
+
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var query = stored;
+                    result = await SqlMapper.ExecuteAsync(conn, query, param: dyParam, commandType: CommandType.StoredProcedure);
+                    var cajita = parametro[4];
+                }
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
 
         public async Task<bool> SetData(string stored, DbParametro[] parametro)
         {

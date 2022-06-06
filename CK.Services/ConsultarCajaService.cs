@@ -3,6 +3,7 @@ using CK.SPAccess;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,6 +78,94 @@ namespace CK.Services
             return RespuestaCajitas;
             //return (IEnumerable<T>)linea;
         }
+
+        public async Task<object> MoverCajas(int p_num_caja, string p_cb_prenda, int p_tipo)
+        {
+            try
+            {
+                CottonData db = new CottonData();
+                DbParametro[] parameters = new DbParametro[3];
+                parameters[0] = new DbParametro("p_num_caja", p_num_caja);
+                parameters[1] = new DbParametro("p_cb_prenda", p_cb_prenda);
+                parameters[2] = new DbParametro("p_tipo", p_tipo);
+
+                var linea = await db.GetData02("SP_CEL_ALM_SLD_PRD_MNTCAJAS", parameters);
+                return null;
+            }      
+            catch (OracleException e)
+            {
+
+                Error error = new Error()
+                {
+                    Code = e.ErrorCode,
+                    Mensaje = e.Message
+                };
+                return error;
+            }
+        }
+
+        public async Task<object> MoverCajas02(MoverCaja mover)
+        {
+            try
+            {
+                CottonData db = new CottonData();
+                DbParametro[] parameters = new DbParametro[3];
+                parameters[0] = new DbParametro("p_num_caja", mover.p_num_caja);
+                parameters[1] = new DbParametro("p_cb_prenda", mover.p_cb_prenda);
+                parameters[2] = new DbParametro("p_tipo", mover.p_tipo);
+
+                var linea = await db.GetData02("SP_CEL_ALM_SLD_PRD_MNTCAJAS", parameters);
+                return null;
+            }
+            catch (OracleException e)
+            {
+
+                Error error = new Error()
+                {
+                    Code = e.ErrorCode,
+                    Mensaje = e.Message
+                };
+                return error;
+            }
+        }
+        public async Task<object> MoverCajas03(MoverCaja mover)
+        {
+            try
+            {
+                var cajita = 0;
+                ParameterDirection Direccion=new ParameterDirection();
+                CottonData db = new CottonData();
+                DbParametro[] parameters = new DbParametro[5];
+                parameters[0] = new DbParametro("p_num_caja", mover.p_num_caja);
+                parameters[1] = new DbParametro("p_cb_prenda", mover.p_cb_prenda);
+                parameters[2] = new DbParametro("p_tipo", mover.p_tipo);
+                parameters[3] = new DbParametro("p_deposito", mover.p_deposito);
+                parameters[4] = new DbParametro("p_new_caja", cajita, ParameterDirection.Output);
+
+                var linea = await db.GetData03("SP_CEL_ALM_SLD_PRD_MNTCAJAS", parameters);
+                
+                if(string.IsNullOrEmpty(cajita.ToString()))
+                {
+                    return cajita;
+                }
+                else
+                {
+                    return null;
+                }           
+            }
+            catch (OracleException e)
+            {
+
+                Error error = new Error()
+                {
+                    Code = e.ErrorCode,
+                    Mensaje = e.Message
+                };
+                return error;
+            }
+        }
+
+
 
         private List<Caja> mapearCajas(object linea)
         {

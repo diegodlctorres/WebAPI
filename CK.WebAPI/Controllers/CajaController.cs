@@ -44,5 +44,51 @@ namespace CK.WebAPI.Controllers
             return resultado;
         }
 
+        [HttpPost("Mover")]
+        public async Task<object> MoverCaja(int p_num_caja, string p_cb_prenda, int p_tipo)
+        {
+            var respuesta = await service.MoverCajas(p_num_caja, p_cb_prenda, p_tipo);
+            if(respuesta is null)
+            {
+                return Ok();
+            }
+            else
+            {
+                return respuesta;
+            }                       
+        }
+
+        [HttpPost("Mover02")]
+        public async Task<object> MoverCaja02(MoverCaja mover)
+        {
+            var respuesta = await service.MoverCajas02(mover);
+            if (respuesta is null)
+            {
+                return Ok();
+            }
+            else
+            {
+                return respuesta;
+            }
+        }
+
+        [HttpPost("Mover03")]
+        public async Task<object> MoverCaja03(MoverCaja mover)
+        {
+            var respuesta = await service.MoverCajas03(mover);
+            if (mover.p_new_caja > 1)
+            {
+                return mover.p_new_caja;
+            }
+            if (respuesta is null)
+            {
+                return Ok();
+            }
+            else
+            {
+                return respuesta;
+            }
+        }
+
     }
 }
