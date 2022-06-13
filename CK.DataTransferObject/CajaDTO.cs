@@ -8,7 +8,7 @@ namespace CK.DataTransferObject
 {
     public class CajaDTO
     {
-        public int DEPOSITO_ENTRADA { get; set; }
+        public int? DEPOSITO_ENTRADA { get; set; }
 
         public string DESCRIPCION_DEPOSITO { get; set; }
 

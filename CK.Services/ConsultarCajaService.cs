@@ -109,10 +109,12 @@ namespace CK.Services
             try
             {
                 CottonData db = new CottonData();
-                DbParametro[] parameters = new DbParametro[3];
+                DbParametro[] parameters = new DbParametro[5];
                 parameters[0] = new DbParametro("p_num_caja", mover.p_num_caja);
                 parameters[1] = new DbParametro("p_cb_prenda", mover.p_cb_prenda);
                 parameters[2] = new DbParametro("p_tipo", mover.p_tipo);
+                parameters[3] = new DbParametro("p_deposito", 0);
+                parameters[4] = new DbParametro("p_new_caja",null, ParameterDirection.Output);
 
                 var linea = await db.GetData02("SP_CEL_ALM_SLD_PRD_MNTCAJAS", parameters);
                 return null;
@@ -132,7 +134,6 @@ namespace CK.Services
         {
             try
             {
-                var cajita = 0;
                 ParameterDirection Direccion=new ParameterDirection();
                 CottonData db = new CottonData();
                 DbParametro[] parameters = new DbParametro[5];
@@ -140,13 +141,14 @@ namespace CK.Services
                 parameters[1] = new DbParametro("p_cb_prenda", mover.p_cb_prenda);
                 parameters[2] = new DbParametro("p_tipo", mover.p_tipo);
                 parameters[3] = new DbParametro("p_deposito", mover.p_deposito);
-                parameters[4] = new DbParametro("p_new_caja", cajita, ParameterDirection.Output);
+                parameters[4] = new DbParametro("p_new_caja", mover.p_new_caja, ParameterDirection.Output);
 
                 var linea = await db.GetData03("SP_CEL_ALM_SLD_PRD_MNTCAJAS", parameters);
                 
-                if(string.IsNullOrEmpty(cajita.ToString()))
+                if(linea != null)
                 {
-                    return cajita;
+                    mover.p_new_caja = (int)linea;
+                    return mover;
                 }
                 else
                 {
@@ -174,14 +176,17 @@ namespace CK.Services
             foreach (var asd in aux)
             {
                 var caja = new Caja();
-                caja.DEPOSITO_ENTRADA = asd.DEPOSITO_ENTRADA;
+                decimal a1 = asd.DEPOSITO_ENTRADA;
+                decimal a2 = asd.PEDIDO_VENDA;
+                decimal a3 = asd.QTDE_PECAS_REAL;
+                caja.DEPOSITO_ENTRADA = (int) a1;
                 caja.DESCRIPCION = asd.DESCRIPCION;
                 caja.DESCRIPCION_DEPOSITO = asd.DESCRIPCION_DEPOSITO;
                 caja.GRUPO = asd.GRUPO;
                 caja.ITEM = asd.ITEM;
                 caja.NIVEL = asd.NIVEL;
-                caja.PEDIDO_VENDA = asd.PEDIDO_VENDA;
-                caja.QTDE_PECAS_REAL = asd.QTDE_PECAS_REAL;
+                caja.PEDIDO_VENDA = (int)a2;
+                caja.QTDE_PECAS_REAL = (int)a3;
                 caja.SUB = asd.SUB;
                 caja.COLOR = asd.COLOR;
                 AuxCajas.Add(caja);

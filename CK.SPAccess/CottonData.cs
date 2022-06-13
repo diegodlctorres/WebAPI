@@ -25,7 +25,7 @@ namespace CK.SPAccess
                     dyParam.Add(parametro[i].Nombre, parametro[i].Valor);
                 }
 
-                dyParam.Add(pcursor, null, OracleMappingType.RefCursor, ParameterDirection.Output);
+                dyParam.Add(pcursor, dbType: OracleMappingType.RefCursor, direction: ParameterDirection.Output);
                 var conn = this.GetConnection();
 
                 if (conn.State == ConnectionState.Closed)
@@ -81,25 +81,23 @@ namespace CK.SPAccess
         public async Task<object> GetData03(string stored, DbParametro[] parametro )
         {
             object result = null;
+            var cajita = 0;
             try
             {
                 var dyParam = new OracleDynamicParameters();
-                var aux = 0;
                 for (int i = 0; i < parametro.Length - 1 ; i++)
                 {
                     dyParam.Add(parametro[i].Nombre, parametro[i].Valor);
                 }
-                OracleMappingType? aea = new OracleMappingType();
-                //dyParam.Add( parametro[4].Nombre,parametro[4].Valor,OracleMappingType.Int16,parametro[4].Direccion);
-                dyParam.Add("p_new_caja", aux, OracleMappingType.Int16, ParameterDirection.Output);
+                dyParam.Add( parametro[4].Nombre,parametro[4].Valor,OracleMappingType.Int16,parametro[4].Direccion);
                 var conn = this.GetConnection();
 
                 if (conn.State == ConnectionState.Closed)
                 {
                     conn.Open();
                     var query = stored;
-                    result = await SqlMapper.ExecuteAsync(conn, query, param: dyParam, commandType: CommandType.StoredProcedure);
-                    var cajita = parametro[4];
+                    result = await SqlMapper.QueryAsync(conn, query, param: dyParam, commandType: CommandType.StoredProcedure);
+                    cajita = Convert.ToInt32(dyParam.Get<decimal>("p_new_caja"));
                 }
                 if (conn.State == ConnectionState.Open)
                 {
@@ -110,7 +108,14 @@ namespace CK.SPAccess
             {
                 throw ex;
             }
-            return result;
+            if(cajita != 0)
+            {
+                return cajita;
+            }
+            else
+            {
+                return result;
+            }         
         }
 
         public async Task<bool> SetData(string stored, DbParametro[] parametro)

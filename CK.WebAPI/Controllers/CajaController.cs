@@ -76,9 +76,9 @@ namespace CK.WebAPI.Controllers
         public async Task<object> MoverCaja03(MoverCaja mover)
         {
             var respuesta = await service.MoverCajas03(mover);
-            if (mover.p_new_caja > 1)
+            if (respuesta != null)
             {
-                return mover.p_new_caja;
+                return respuesta;
             }
             if (respuesta is null)
             {

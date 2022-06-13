@@ -8,7 +8,7 @@ namespace CK.DataAccess.Models
 {
     public partial class Caja
     {
-        public int DEPOSITO_ENTRADA { get; set; }
+        public int? DEPOSITO_ENTRADA { get; set; }
 
         public string DESCRIPCION_DEPOSITO { get; set; }
 
