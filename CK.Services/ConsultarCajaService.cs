@@ -189,6 +189,7 @@ namespace CK.Services
                 caja.QTDE_PECAS_REAL = (int)a3;
                 caja.SUB = asd.SUB;
                 caja.COLOR = asd.COLOR;
+                caja.CLIENTE = asd.CLIENTE;
                 AuxCajas.Add(caja);
             }
             return AuxCajas;

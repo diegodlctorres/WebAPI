@@ -27,5 +27,7 @@ namespace CK.DataTransferObject
         public string DESCRIPCION { get; set; }
 
         public string COLOR { get; set; }
+
+        public string CLIENTE { get; set; }
     }
 }

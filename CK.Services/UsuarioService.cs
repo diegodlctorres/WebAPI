@@ -167,7 +167,7 @@ namespace CK.Services
                 DbParametro[] parameters = new DbParametro[3];
                 parameters[0] = new DbParametro("p_cod_funcionario", codFuncionario);
                 parameters[1] = new DbParametro("p_contrasena", contrasena);
-                parameters[2] = new DbParametro("p_codigo_aplicacion", 1);
+                parameters[2] = new DbParametro("p_codigo_aplicacion", 3);
 
                 IEnumerable<dynamic> linea = await db.getDynamic("getck_app_login", parameters);//Nombre del store
 
