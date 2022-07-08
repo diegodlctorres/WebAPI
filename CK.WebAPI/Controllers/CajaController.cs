@@ -19,14 +19,7 @@ namespace CK.WebAPI.Controllers
         {
             this.service = service;
         }
-
-        [HttpGet("Listar")]
-        public async Task<object> ListarSPdelMongol()
-        {
-            var resultado = await service.Listar();
-            return resultado;
-        }
-
+        //Consultar Caja - Módulo
         [HttpGet("Consulta/{numCaja}")]
         public async Task<object> ConsultaCaja(int numCaja)
         {
@@ -34,30 +27,7 @@ namespace CK.WebAPI.Controllers
             return resultado;
 
         }
-
-        [HttpGet("Consulta2")]
-        public async Task<ResponseService<IEnumerable<Caja>>> traerCajas(int numCaja)
-        {
-            CajaDTO cajas = new CajaDTO();
-            var resultado = await service.traerCajas<Caja>(numCaja);
-            //cambiar el responseService<list<cajaz>> a responseService<list<cajadto>>
-            return resultado;
-        }
-
-        [HttpPost("Mover")]
-        public async Task<object> MoverCaja(int p_num_caja, string p_cb_prenda, int p_tipo)
-        {
-            var respuesta = await service.MoverCajas(p_num_caja, p_cb_prenda, p_tipo);
-            if(respuesta is null)
-            {
-                return Ok();
-            }
-            else
-            {
-                return respuesta;
-            }                       
-        }
-
+        //Quitar-Agregar Prenda en Caja
         [HttpPost("Mover02")]
         public async Task<object> MoverCaja02(MoverCaja mover)
         {
@@ -71,7 +41,7 @@ namespace CK.WebAPI.Controllers
                 return respuesta;
             }
         }
-
+        //Crear Caja
         [HttpPost("Mover03")]
         public async Task<object> MoverCaja03(MoverCaja mover)
         {
