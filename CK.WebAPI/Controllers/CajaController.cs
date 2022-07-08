@@ -80,13 +80,9 @@ namespace CK.WebAPI.Controllers
             {
                 return respuesta;
             }
-            if (respuesta is null)
-            {
-                return Ok();
-            }
             else
             {
-                return respuesta;
+                return Ok();
             }
         }
 
