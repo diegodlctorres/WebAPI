@@ -107,6 +107,37 @@ namespace CK.WebAPI.Mappings
             };
         }
     }
+    public static partial class Mapper
+    {
+        //Métodos de extensión
+        public static MoverCajaDTO ToDataTransferObject(this MoverCaja model)  // Convierte de ModelContext a DTO
+        {
+            return new MoverCajaDTO()
+            {
+                p_cb_prenda=model.p_cb_prenda,
+                p_num_caja= model.p_num_caja,
+                p_tipo = model.p_tipo,
+                p_deposito = model.p_deposito,
+                p_new_caja=model.p_new_caja
+
+            };
+        }
+    }
+
+    public static partial class Mapper
+    {
+        public static MoverCaja ToModel(this MoverCajaDTO dto)  // Convierte de DTO a ModelContext
+        {
+            return new MoverCaja()
+            {
+                p_cb_prenda = dto.p_cb_prenda,
+                p_num_caja = dto.p_num_caja,
+                p_tipo = dto.p_tipo,
+                p_deposito = dto.p_deposito,
+                p_new_caja = dto.p_new_caja
+            };
+        }
+    }
 
     public static partial class Mapper
     {
@@ -125,6 +156,8 @@ namespace CK.WebAPI.Mappings
                 aux.SUB = mdl.SUB;
                 aux.ITEM = mdl.ITEM;
                 aux.NIVEL = mdl.NIVEL;
+                aux.COLOR = mdl.COLOR;
+                aux.CLIENTE = mdl.CLIENTE;
                 cajaDtos.Add(aux);
             }
             return cajaDtos;

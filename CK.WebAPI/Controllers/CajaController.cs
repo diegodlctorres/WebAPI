@@ -19,50 +19,42 @@ namespace CK.WebAPI.Controllers
         {
             this.service = service;
         }
-
-        [HttpGet("Listar")]
-        public async Task<object> ListarSPdelMongol()
+        //Consultar Caja - Módulo
+        [HttpGet("Consulta/{numCaja}")]
+        public async Task<object> ConsultaCaja(int numCaja)
         {
-            var resultado = await service.Listar();
+            var resultado = await service.ConsultaCaja(numCaja);
             return resultado;
+
         }
-
-        [HttpGet("Consulta")]
-        public async Task<ResponseService<List<CajaDTO>>> ConsultaCaja(int numCaja)
+        //Quitar-Agregar Prenda en Caja
+        [HttpPost("Mover02")]
+        public async Task<object> MoverCaja02(MoverCaja mover)
         {
-                var resultado = await service.ConsultaCaja(numCaja);
-
-            CajaDTO cajas = new CajaDTO();
-
-
-            var resultado2 = new ResponseService<List<CajaDTO>>();
-            //{
-            //    Objeto = resultado.Objeto.ToDataTransferObject()
-            //};
-
-
-
-            if (resultado.Objeto == null)
+            var respuesta = await service.MoverCajas02(mover);
+            if (respuesta is null)
             {
-                resultado2.Error = resultado.Error;
-                return resultado2;
+                return Ok();
             }
-
-            resultado2.Objeto = resultado.Objeto.ToDataTransferObject();
-            return resultado2;
-
+            else
+            {
+                return respuesta;
+            }
         }
-
-        [HttpGet("Consulta2")]
-        public async Task<ResponseService<IEnumerable<Caja>>> traerCajas(int numCaja)
+        //Crear Caja
+        [HttpPost("Mover03")]
+        public async Task<object> MoverCaja03(MoverCaja mover)
         {
-            CajaDTO cajas = new CajaDTO();
-            var resultado = await service.traerCajas<Caja>(numCaja);
-            //cambiar el responseService<list<cajaz>> a responseService<list<cajadto>>
-            //return resultado;
-            return resultado;
+            var respuesta = await service.MoverCajas03(mover);
+            if (respuesta != null)
+            {
+                return respuesta;
+            }
+            else
+            {
+                return Ok();
+            }
         }
-
 
     }
 }

@@ -8,7 +8,7 @@ namespace CK.DataTransferObject
 {
     public class CajaDTO
     {
-        public int DEPOSITO_ENTRADA { get; set; }
+        public int? DEPOSITO_ENTRADA { get; set; }
 
         public string DESCRIPCION_DEPOSITO { get; set; }
 
@@ -25,5 +25,9 @@ namespace CK.DataTransferObject
         public int QTDE_PECAS_REAL { get; set; }
 
         public string DESCRIPCION { get; set; }
+
+        public string COLOR { get; set; }
+
+        public string CLIENTE { get; set; }
     }
 }

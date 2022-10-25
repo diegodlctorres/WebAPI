@@ -9,10 +9,11 @@ namespace CK.Services
 {
     public interface IConsultarCajaService
     {
-        Task<object> Listar();
+        Task<object> ConsultaCaja(int numCaja);
 
-        Task<ResponseService<List<Caja>>> ConsultaCaja(int numCaja);
+        Task<object> MoverCajas02(MoverCaja mover);
 
-        Task<ResponseService<IEnumerable<T>>> traerCajas<T>(int numCaja);
+        Task<object> MoverCajas03(MoverCaja mover);
+
     }
 }
